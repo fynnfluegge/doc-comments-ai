@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "doc-comments-ai"
+version = "0.1.0"
+description = ""
+authors = ["fynnfluegge <fynnfluegge@gmx.de>"]
+readme = "README.md"
+packages = [{include = "doc_comments_ai"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
