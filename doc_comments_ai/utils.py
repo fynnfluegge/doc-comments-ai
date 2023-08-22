@@ -1,34 +1,57 @@
 import os
 import re
+from doc_comments_ai.constants import Language
 
 
-def get_programming_language(file_extension: str) -> str:
+def get_programming_language(file_extension: str) -> Language:
+    """
+    Returns the corresponding programming language based on the given file extension.
+    
+    Args:
+        file_extension (str): The file extension of the programming file.
+    
+    Returns:
+        Language: The corresponding programming language if it exists in the mapping, otherwise Language.UNKNOWN.
+    """
     language_mapping = {
-        ".py": "python",
-        ".js": "javascript",
-        ".java": "java",
-        ".cpp": "cpp",
-        ".c": "c",
-        ".html": "html",
-        ".css": "css",
-        ".php": "php",
-        ".rb": "ruby",
-        ".go": "go",
-        ".rs": "rust",
-        ".swift": "swift",
-        ".kt": "kotlin",
-        ".cs": "c_sharp",
-        ".m": "objective_c",
-        ".scala": "scala",
-        ".pl": "perl",
-        ".lua": "lua",
-        ".r": "r",
-        ".ts": "typescript",
+        ".py": Language.PYTHON,
+        ".js": Language.JAVASCRIPT,
+        ".ts": Language.TYPESCRIPT,
+        ".java": Language.JAVA,
+        ".cpp": Language.CPP,
+        ".c": Language.C,
+        ".html": Language.HTML,
+        ".css": Language.CSS,
+        ".php": Language.PHP,
+        ".rb": Language.RUBY,
+        ".go": Language.GO,
+        ".rs": Language.RUST,
+        ".swift": Language.SWIFT,
+        ".kt": Language.KOTLIN,
+        ".cs": Language.C_SHARP,
+        ".m": Language.OBJECTIVE_C,
+        ".scala": Language.SCALA,
+        ".pl": Language.PERL,
+        ".lua": Language.LUA,
+        ".r": Language.R,
     }
-    return language_mapping.get(file_extension, "Unknown")
+    return language_mapping.get(file_extension, Language.UNKNOWN)
 
 
 def get_file_extension(file_name: str) -> str:
+    """
+    Returns the file extension of a given file name.
+
+    Args:
+        file_name (str): The name of the file.
+
+    Returns:
+        str: The file extension of the file.
+
+    Example:
+        >> get_file_extension('my_file.txt')
+        '.txt'
+    """
     return os.path.splitext(file_name)[-1]
 
 

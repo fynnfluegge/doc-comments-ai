@@ -34,8 +34,8 @@ def run():
 
         file_extension = utils.get_file_extension(file_name)
         programming_language = utils.get_programming_language(file_extension)
-        parser = get_parser(programming_language)
-        language = get_language(programming_language)
+        parser = get_parser(programming_language.value)
+        language = get_language(programming_language.value)
         tree = parser.parse(file_bytes)
         node = tree.root_node
 
@@ -56,13 +56,13 @@ def run():
             spinner.start()
 
             documented_method_source_code = llm_wrapper.generate_doc_comment(
-                programming_language, method_source_code
+                programming_language.value, method_source_code
             )
 
             generated_doc_comments[
                 method_source_code
             ] = utils.extract_content_from_markdown_code_block(
-                documented_method_source_code, programming_language
+                documented_method_source_code, programming_language.value
             )
 
             spinner.stop()
