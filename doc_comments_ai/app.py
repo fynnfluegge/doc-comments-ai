@@ -26,6 +26,8 @@ def run():
 
     llm_wrapper = llm.LLM()
 
+    generated_doc_comments = {}
+
     with open(file_name, "r") as file:
         # Read the entire content of the file into a string
         file_bytes = file.read().encode()
@@ -57,11 +59,20 @@ def run():
                 programming_language, method_source_code
             )
 
+            generated_doc_comments[
+                method_source_code
+            ] = utils.extract_content_from_markdown_code_block(
+                documented_method_source_code, programming_language
+            )
+
             spinner.stop()
 
             print(f"Doc comment for {treesitter.get_function_name(method)} generated")
 
-            # Set the file pointer to the start_byte of the method
-            file.seek(method.start_byte)
-            # Read content between start_byte and end_byte
-            content = file.read(method.end_byte - method.start_byte)
+    file.close()
+
+    for original_code, generated_doc_comment in generated_doc_comments.items():
+        print(generated_doc_comment)
+        utils.write_code_snippet_to_file(
+            file_name, original_code, generated_doc_comment
+        )

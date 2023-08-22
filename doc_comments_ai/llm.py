@@ -4,10 +4,10 @@ from langchain import PromptTemplate, LLMChain
 
 class LLM:
     def __init__(self, model: str = "gpt-3.5-turbo"):
-        self.llm = ChatOpenAI(temperature=0.9, max_tokens=400, model=model)
+        self.llm = ChatOpenAI(temperature=0.9, max_tokens=2048, model=model)
         self.template = (
-            "I have this {language} method:\n{code}\nAdd a doc comment to the method and return the modified code. "
-            + "Embed the modified code in a markdown code block."
+            "I have this {language} method:\n{code}\nAdd a doc comment to the method. "
+            "Return the method with the doc comment embedded in a markdown code block. "
         )
         self.prompt = PromptTemplate(
             template=self.template, input_variables=["language", "code"]
