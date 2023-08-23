@@ -22,7 +22,10 @@ def query_method_name(programming_language: Language, node: tree_sitter.Node):
         case Language.TYPESCRIPT:
             pass
         case Language.JAVA:
-            pass
+            if node.type == "method_declaration":
+                for child in node.children:
+                    if child.type == "identifier":
+                        return child.text
         case Language.KOTLIN:
             pass
         case Language.LUA:
@@ -48,7 +51,20 @@ def query_all_methods(programming_language: Language, node: tree_sitter.Node):
         case Language.TYPESCRIPT:
             return []
         case Language.JAVA:
-            return []
+            methods = []
+            if node.type == "method_declaration":
+                doc_comment_node = None
+                print(node.prev_named_sibling)
+                if (
+                    node.prev_named_sibling
+                    and node.prev_named_sibling.type == "block_comment"
+                ):
+                    doc_comment_node = node.prev_named_sibling
+                methods.append({"method": node, "doc_comment": doc_comment_node})
+            else:
+                for child in node.children:
+                    methods.extend(query_all_methods(programming_language, child))
+            return methods
         case Language.KOTLIN:
             return []
         case Language.LUA:
