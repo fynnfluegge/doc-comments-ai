@@ -39,20 +39,17 @@ def run():
         tree = parser.parse(file_bytes)
         node = tree.root_node
 
-        methods = treesitter.get_methods_from_node(node)
+        methods = treesitter.query_all_methods(programming_language, node)
         for method in methods:
+            method_name = treesitter.query_method_name(programming_language, method)
             # Check if method has a doc comment
-            if treesitter.has_doc_comment(method, language):
-                print(
-                    f"Method {treesitter.get_function_name(method)} already has a doc comment"
-                )
+            if treesitter.query_doc_comment(programming_language, language, method):
+                print(f"Method {method_name} already has a doc comment")
                 continue
 
             method_source_code = treesitter.get_source_from_node(method)
 
-            spinner = yaspin(
-                text=f"Generating doc comment for {treesitter.get_function_name(method)}..."
-            )
+            spinner = yaspin(text=f"Generating doc comment for {method_name}...")
             spinner.start()
 
             documented_method_source_code = llm_wrapper.generate_doc_comment(
@@ -67,7 +64,7 @@ def run():
 
             spinner.stop()
 
-            print(f"Doc comment for {treesitter.get_function_name(method)} generated")
+            print(f"Doc comment for {method_name} generated")
 
     file.close()
 
