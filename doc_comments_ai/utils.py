@@ -20,20 +20,8 @@ def get_programming_language(file_extension: str) -> Language:
         ".java": Language.JAVA,
         ".kt": Language.KOTLIN,
         ".lua": Language.LUA,
-        # ".rs": Language.RUST,
-        # ".cpp": Language.CPP,
-        # ".c": Language.C,
-        # ".html": Language.HTML,
-        # ".css": Language.CSS,
-        # ".php": Language.PHP,
-        # ".rb": Language.RUBY,
-        # ".go": Language.GO,
-        # ".swift": Language.SWIFT,
-        # ".cs": Language.C_SHARP,
-        # ".m": Language.OBJECTIVE_C,
-        # ".scala": Language.SCALA,
-        # ".pl": Language.PERL,
-        # ".r": Language.R,
+        ".rs": Language.RUST,
+        ".go": Language.GO,
     }
     return language_mapping.get(file_extension, Language.UNKNOWN)
 

@@ -55,3 +55,29 @@ def test_java_qery(java_code_fixture):
     )
 
     assert treesitterNodes[1].doc_comment is None
+
+
+@pytest.mark.usefixtures("javascript_code_fixture")
+def test_javascript_qery(javascript_code_fixture):
+    treesitter = Treesitter.create_treesitter(Language.JAVASCRIPT)
+    treesitterNodes: list[TreesitterNode] = treesitter.parse(
+        javascript_code_fixture.encode()
+    )
+
+    assert treesitterNodes.__len__() == 2
+
+    assert treesitterNodes[0].name == b"getProgrammingLanguage"
+
+    assert treesitterNodes[1].name == b"getFileExtension"
+
+    assert (
+        treesitterNodes[0].doc_comment
+        == """/**
+ * Returns the corresponding programming language based on the given file extension.
+ *
+ * @param {string} fileExtension - The file extension of the programming file.
+ * @returns {string} The corresponding programming language if it exists in the mapping, otherwise 'Unknown'.
+ */"""
+    )
+
+    assert treesitterNodes[1].doc_comment is None

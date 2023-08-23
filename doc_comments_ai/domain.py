@@ -1,2 +1,3 @@
 from doc_comments_ai.treesitter.treesitter_py import TreesitterPython
 from doc_comments_ai.treesitter.treesitter_java import TreesitterJava
+from doc_comments_ai.treesitter.treesitter_js import TreesitterJavascript
