@@ -19,7 +19,7 @@ class TreesitterJava(Treesitter):
         for method in methods:
             method_name = self._query_method_name(method["method"])
             doc_comment = method["doc_comment"]
-            result.append(TreesitterNode(method_name, doc_comment, method))
+            result.append(TreesitterNode(method_name, doc_comment, method["method"]))
         return result
 
     def _query_method_name(self, node: tree_sitter.Node):
