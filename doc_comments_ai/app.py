@@ -1,9 +1,11 @@
 import os
 import sys
-from tree_sitter_languages import get_language, get_parser
-from doc_comments_ai import utils
-from doc_comments_ai import treesitter
-from doc_comments_ai import llm
+from doc_comments_ai import utils, llm, domain
+from doc_comments_ai.treesitter.treesitter import (
+    Treesitter,
+    TreesitterNode,
+    get_source_from_node,
+)
 from yaspin import yaspin
 
 
@@ -34,22 +36,18 @@ def run():
 
         file_extension = utils.get_file_extension(file_name)
         programming_language = utils.get_programming_language(file_extension)
-        parser = get_parser(programming_language.value)
-        language = get_language(programming_language.value)
-        tree = parser.parse(file_bytes)
-        node = tree.root_node
 
-        methods = treesitter.query_all_methods(programming_language, node)
-        for method in methods:
-            method_name = treesitter.query_method_name(programming_language, method)
-            # Check if method has a doc comment
-            if treesitter.query_doc_comment(programming_language, language, method):
-                print(f"Method {method_name} already has a doc comment")
+        treesitter_parser = Treesitter.create_treesitter(programming_language)
+        treesitterNodes: list[TreesitterNode] = treesitter_parser.parse(file_bytes)
+
+        for node in treesitterNodes:
+            if node.doc_comment:
+                print(f"Method {node.name} already has a doc comment")
                 continue
 
-            method_source_code = treesitter.get_source_from_node(method)
+            method_source_code = get_source_from_node(node.node)
 
-            spinner = yaspin(text=f"Generating doc comment for {method_name}...")
+            spinner = yaspin(text=f"Generating doc comment for {node.name}...")
             spinner.start()
 
             documented_method_source_code = llm_wrapper.generate_doc_comment(
@@ -64,7 +62,7 @@ def run():
 
             spinner.stop()
 
-            print(f"Doc comment for {method_name} generated")
+            print(f"Doc comment for {node.name} generated")
 
     file.close()
 

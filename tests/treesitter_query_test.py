@@ -1,66 +1,57 @@
 import pytest
 from doc_comments_ai.constants import Language
-from doc_comments_ai import treesitter
-from tree_sitter_languages import get_language, get_parser
+from doc_comments_ai import domain
+from doc_comments_ai.treesitter.treesitter import Treesitter, TreesitterNode
 
 
 @pytest.mark.usefixtures("python_code_fixture")
 def test_python_qery(python_code_fixture):
-    programming_language = Language.PYTHON
-    treesitter_language = get_language(programming_language.value)
-    parser = get_parser(programming_language.value)
-    tree = parser.parse(python_code_fixture.encode())
-    node = tree.root_node
-    methods = treesitter.query_all_methods(programming_language, node)
-
-    assert methods.__len__() == 2
-
-    assert (
-        treesitter.query_method_name(programming_language, methods[0])
-        == b"get_programming_language"
+    treesitter = Treesitter.create_treesitter(Language.PYTHON)
+    treesitterNodes: list[TreesitterNode] = treesitter.parse(
+        python_code_fixture.encode()
     )
 
-    assert (
-        treesitter.query_method_name(programming_language, methods[1])
-        == b"get_file_extension"
-    )
+    assert treesitterNodes.__len__() == 2
+
+    assert treesitterNodes[0].name == b"get_programming_language"
+
+    assert treesitterNodes[1].name == b"get_file_extension"
 
     assert (
-        treesitter.query_doc_comment(
-            programming_language, treesitter_language, methods[0]
-        )
-        is True
+        treesitterNodes[0].doc_comment
+        == """\"\"\"
+    Returns the corresponding programming language based on the given file extension.
+
+    Args:
+        file_extension (str): The file extension of the programming file.
+
+    Returns:
+        Language: The corresponding programming language if it exists in the mapping, otherwise Language.UNKNOWN.
+    \"\"\""""
     )
 
-    assert (
-        treesitter.query_doc_comment(
-            programming_language, treesitter_language, methods[1]
-        )
-        is False
-    )
+    assert treesitterNodes[1].doc_comment is None
 
 
 @pytest.mark.usefixtures("java_code_fixture")
 def test_java_qery(java_code_fixture):
-    programming_language = Language.JAVA
-    treesitter_language = get_language(programming_language.value)
-    parser = get_parser(programming_language.value)
-    tree = parser.parse(java_code_fixture.encode())
-    node = tree.root_node
-    methods = treesitter.query_all_methods(programming_language, node)
-    # print(node.sexp())
+    treesitter = Treesitter.create_treesitter(Language.JAVA)
+    treesitterNodes: list[TreesitterNode] = treesitter.parse(java_code_fixture.encode())
 
-    assert methods.__len__() == 2
+    assert treesitterNodes.__len__() == 2
 
-    assert (
-        treesitter.query_method_name(programming_language, methods[0]["method"])
-        == b"getProgrammingLanguage"
-    )
+    assert treesitterNodes[0].name == b"getProgrammingLanguage"
+
+    assert treesitterNodes[1].name == b"getFileExtension"
 
     assert (
-        treesitter.query_method_name(programming_language, methods[1]["method"])
-        == b"getFileExtension"
+        treesitterNodes[0].doc_comment
+        == """/**
+     * Gets the corresponding programming language based on the given file extension.
+     *
+     * @param fileExtension The file extension of the programming file.
+     * @return The corresponding programming language if it exists in the mapping, otherwise Language.UNKNOWN.
+     */"""
     )
 
-    assert methods[0]["doc_comment"] is not None
-    assert methods[1]["doc_comment"] is None
+    assert treesitterNodes[1].doc_comment is None

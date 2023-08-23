@@ -40,17 +40,13 @@ def get_programming_language(file_extension: str) -> Language:
 
 def get_file_extension(file_name: str) -> str:
     """
-    Returns the file extension of a given file name.
+    Returns the extension of a file.
 
     Args:
-        file_name (str): The name of the file.
+        file_name (str): The name of the file including its extension.
 
     Returns:
-        str: The file extension of the file.
-
-    Example:
-        >> get_file_extension('my_file.txt')
-        '.txt'
+        str: The extension of the file.
     """
     return os.path.splitext(file_name)[-1]
 
