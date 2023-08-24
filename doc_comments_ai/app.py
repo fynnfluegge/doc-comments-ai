@@ -26,6 +26,11 @@ def run():
         action="store_true",
         help="Adds inline comments to the code if necessary.",
     )
+    parser.add_argument(
+        "--gpt4",
+        action="store_true",
+        help="Uses GPT-4 (default GPT-3.5).",
+    )
 
     if sys.argv.__len__() < 2:
         sys.exit("Please provide a file")
@@ -37,7 +42,10 @@ def run():
     if not os.path.isfile(file_name):
         sys.exit(f"File {file_name} does not exist")
 
-    llm_wrapper = llm.LLM()
+    if args.gpt4:
+        llm_wrapper = llm.LLM(model="gpt-4")
+    else:
+        llm_wrapper = llm.LLM()
 
     generated_doc_comments = {}
 
