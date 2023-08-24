@@ -107,3 +107,39 @@ def test_typescript_qery(typescript_code_fixture):
     )
 
     assert treesitterNodes[1].doc_comment is None
+
+
+@pytest.mark.usefixtures("rust_code_fixture")
+def test_rust_qery(rust_code_fixture):
+    treesitter = Treesitter.create_treesitter(Language.RUST)
+    treesitterNodes: list[TreesitterNode] = treesitter.parse(rust_code_fixture.encode())
+
+    assert treesitterNodes.__len__() == 2
+
+    assert treesitterNodes[0].name == b"get_programming_language"
+
+    assert treesitterNodes[1].name == b"get_file_extension"
+
+    assert (
+        treesitterNodes[0].doc_comment
+        == """/// Returns the corresponding programming language based on the given file extension.
+///
+/// # Arguments
+///
+/// * `file_extension` - The file extension of the programming file.
+///
+/// # Returns
+///
+/// * The corresponding programming language if it exists in the mapping, otherwise Language::UNKNOWN.
+///
+/// # Example
+///
+/// ```
+/// let file_extension = ".py";
+/// let language = get_programming_language(file_extension);
+/// assert_eq!(language, Language::PYTHON);
+/// ```"""
+    )
+
+    # print(treesitterNodes[1].doc_comment)
+    assert treesitterNodes[1].doc_comment is None
