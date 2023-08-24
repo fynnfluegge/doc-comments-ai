@@ -13,9 +13,9 @@ def test_python_qery(python_code_fixture):
 
     assert treesitterNodes.__len__() == 2
 
-    assert treesitterNodes[0].name == b"get_programming_language"
+    assert treesitterNodes[0].name == "get_programming_language"
 
-    assert treesitterNodes[1].name == b"get_file_extension"
+    assert treesitterNodes[1].name == "get_file_extension"
 
     assert (
         treesitterNodes[0].doc_comment
@@ -40,9 +40,9 @@ def test_java_qery(java_code_fixture):
 
     assert treesitterNodes.__len__() == 2
 
-    assert treesitterNodes[0].name == b"getProgrammingLanguage"
+    assert treesitterNodes[0].name == "getProgrammingLanguage"
 
-    assert treesitterNodes[1].name == b"getFileExtension"
+    assert treesitterNodes[1].name == "getFileExtension"
 
     assert (
         treesitterNodes[0].doc_comment
@@ -66,9 +66,9 @@ def test_javascript_qery(javascript_code_fixture):
 
     assert treesitterNodes.__len__() == 2
 
-    assert treesitterNodes[0].name == b"getProgrammingLanguage"
+    assert treesitterNodes[0].name == "getProgrammingLanguage"
 
-    assert treesitterNodes[1].name == b"getFileExtension"
+    assert treesitterNodes[1].name == "getFileExtension"
 
     assert (
         treesitterNodes[0].doc_comment
@@ -92,9 +92,9 @@ def test_typescript_qery(typescript_code_fixture):
 
     assert treesitterNodes.__len__() == 2
 
-    assert treesitterNodes[0].name == b"getProgrammingLanguage"
+    assert treesitterNodes[0].name == "getProgrammingLanguage"
 
-    assert treesitterNodes[1].name == b"getFileExtension"
+    assert treesitterNodes[1].name == "getFileExtension"
 
     assert (
         treesitterNodes[0].doc_comment
@@ -116,9 +116,9 @@ def test_rust_qery(rust_code_fixture):
 
     assert treesitterNodes.__len__() == 2
 
-    assert treesitterNodes[0].name == b"get_programming_language"
+    assert treesitterNodes[0].name == "get_programming_language"
 
-    assert treesitterNodes[1].name == b"get_file_extension"
+    assert treesitterNodes[1].name == "get_file_extension"
 
     assert (
         treesitterNodes[0].doc_comment
