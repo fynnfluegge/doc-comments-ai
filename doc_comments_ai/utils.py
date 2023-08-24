@@ -72,7 +72,7 @@ def extract_content_from_markdown_code_block(markdown_code_block, language) -> s
         str: The extracted content.
 
     """
-    pattern = f"```{language}?\n(.*?)```"
+    pattern = r"```(?:[a-zA-Z0-9]+)?\n(.*?)```"
     match = re.search(pattern, markdown_code_block, re.DOTALL)
 
     if match:
