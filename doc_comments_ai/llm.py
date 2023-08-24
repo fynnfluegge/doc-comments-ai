@@ -7,8 +7,9 @@ class LLM:
         self.llm = ChatOpenAI(temperature=0.9, max_tokens=2048, model=model)
         self.template = (
             "I have this {language} method:\n{code}\nAdd a doc comment to the method. "
-            "Return the method with the doc comment embedded in a markdown code block. "
+            "Return the method with the doc comment as a markdown code block. "
             "{inline_comments}"
+            "Don't include any explanations in your response."
         )
         self.prompt = PromptTemplate(
             template=self.template,

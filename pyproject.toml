@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "doc-comments-ai"
-version = "0.1.0"
+version = "0.1.2"
 description = ""
 authors = ["fynnfluegge <fynnfluegge@gmx.de>"]
 readme = "README.md"
@@ -18,7 +18,7 @@ yaspin = "^3.0.0"
 pytest = "^7.4.0"
 
 [tool.poetry.scripts]
-dccai = "doc_comments_ai.__main__:main"
+aicomment = "doc_comments_ai.__main__:main"
 
 [build-system]
 requires = ["poetry-core"]
