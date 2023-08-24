@@ -8,17 +8,25 @@ class LLM:
         self.template = (
             "I have this {language} method:\n{code}\nAdd a doc comment to the method. "
             "Return the method with the doc comment embedded in a markdown code block. "
+            "{inline_comments}"
         )
         self.prompt = PromptTemplate(
-            template=self.template, input_variables=["language", "code"]
+            template=self.template,
+            input_variables=["language", "code", "inline_comments"],
         )
         self.chain = LLMChain(llm=self.llm, prompt=self.prompt)
 
-    def generate_doc_comment(self, language, code):
+    def generate_doc_comment(self, language, code, inline=False):
         """
         Generates a doc comment for the given method
         """
-        input = {"language": language, "code": code}
+
+        if inline:
+            inline_comments = "Add inline comments to the code if necessary."
+        else:
+            inline_comments = ""
+
+        input = {"language": language, "code": code, "inline_comments": inline_comments}
 
         documented_code = self.chain.run(input)
 

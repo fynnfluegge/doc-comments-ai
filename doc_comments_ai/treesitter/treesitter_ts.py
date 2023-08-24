@@ -26,7 +26,7 @@ class TreesitterTypescript(Treesitter):
         if node.type == "function_declaration":
             for child in node.children:
                 if child.type == "identifier":
-                    return child.text
+                    return child.text.decode()
         return None
 
     def _query_all_methods(self, node: tree_sitter.Node):

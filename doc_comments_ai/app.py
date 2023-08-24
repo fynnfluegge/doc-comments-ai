@@ -1,4 +1,5 @@
 import os
+import argparse
 import sys
 from doc_comments_ai import utils, llm, domain
 from doc_comments_ai.treesitter.treesitter import (
@@ -18,10 +19,20 @@ def run():
     if not api_key:
         sys.exit("OPENAI_API_KEY not found.")
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("dir", nargs="?", default=os.getcwd())
+    parser.add_argument(
+        "--inline",
+        action="store_true",
+        help="Adds inline comments to the code if necessary.",
+    )
+
     if sys.argv.__len__() < 2:
         sys.exit("Please provide a file")
 
-    file_name = sys.argv[1]
+    args = parser.parse_args()
+
+    file_name = args.dir
 
     if not os.path.isfile(file_name):
         sys.exit(f"File {file_name} does not exist")
@@ -41,17 +52,18 @@ def run():
         treesitterNodes: list[TreesitterNode] = treesitter_parser.parse(file_bytes)
 
         for node in treesitterNodes:
+            method_name = utils.get_bold_text(node.name)
             if node.doc_comment:
-                print(f"Method {node.name} already has a doc comment")
+                print(f"Method {method_name} already has a doc comment. Skipping...")
                 continue
 
             method_source_code = get_source_from_node(node.node)
 
-            spinner = yaspin(text=f"Generating doc comment for {node.name}...")
+            spinner = yaspin(text=f"🔧 Generating doc comment for {method_name}...")
             spinner.start()
 
             documented_method_source_code = llm_wrapper.generate_doc_comment(
-                programming_language.value, method_source_code
+                programming_language.value, method_source_code, args.inline
             )
 
             generated_doc_comments[
@@ -62,12 +74,11 @@ def run():
 
             spinner.stop()
 
-            print(f"Doc comment for {node.name} generated")
+            print(f"✅ Doc comment for {method_name} generated.")
 
     file.close()
 
     for original_code, generated_doc_comment in generated_doc_comments.items():
-        print(generated_doc_comment)
         utils.write_code_snippet_to_file(
             file_name, original_code, generated_doc_comment
         )
