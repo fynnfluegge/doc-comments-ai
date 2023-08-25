@@ -11,8 +11,8 @@
 <div align="center">
 
 Focus on writing your code, let AI write the documentation for you. With just a few keystrokes in your terminal.
-  
-![ezgif-4-53d6e634af](https://github.com/fynnfluegge/doc-comments.ai/assets/16321871/6ab34a94-4394-4755-be7c-66dd8d304beb)
+
+![ezgif-4-53d6e634af](https://github.com/fynnfluegge/doc-comments.ai/assets/16321871/8f2756cb-36f9-43c6-94b1-658b89b49786)
 
 </div>
 
