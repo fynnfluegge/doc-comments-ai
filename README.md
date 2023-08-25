@@ -22,8 +22,11 @@ Focus on writing your code, let AI write the documentation for you. With just a 
 - Create inline documentation comments in method bodies
 - Treesitter integration
 
+> [!NOTE]
+> Review suggestions will only be applied to files without unstaged changes, so that nothing is overwritten.
+
 ## 🚀 Usage
-- `aicomments <RELATIVE_FILE_PATH>`: Create documentations for any method in the file which doesn"t have any yet.
+- `aicomments <RELATIVE_FILE_PATH>`: Create documentations for any method in the file which doesn't have any yet.
 - `aicomments <RELATIVE_FILE_PATH> --inline`: Create also documentation comments in the method body.
 - `aicomments <RELATIVE_FILE_PATH> --gpt4`: Use GPT-4 model (Default is GPT-3.5).
 
@@ -59,3 +62,7 @@ pipx install doc-comments-ai
 
 > [!NOTE]
 > It is recommended to use `pipx` for installation, nonetheless it is also possible to use `pip`.
+
+## 🚨 Disclaimer
+
+Your code won't be stored, but your code does leave your machine.
