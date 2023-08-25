@@ -9,11 +9,13 @@
 </div>
 
 <div align="center">
-![ezgif-4-53d6e634af](https://github.com/fynnfluegge/doc-comments.ai/assets/16321871/6ab34a94-4394-4755-be7c-66dd8d304beb)
-</div>
-
 
 Focus on writing your code, let AI write the documentation for you. With just a few keystrokes in your terminal.
+  
+![ezgif-4-53d6e634af](https://github.com/fynnfluegge/doc-comments.ai/assets/16321871/6ab34a94-4394-4755-be7c-66dd8d304beb)
+
+</div>
+
 
 ## ✨ Features
 - Create documentation comment blocks for all methods in a file
