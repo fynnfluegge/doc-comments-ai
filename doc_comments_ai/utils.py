@@ -1,17 +1,18 @@
 import os
 import re
+import subprocess
 from doc_comments_ai.constants import Language
 
 
 def get_programming_language(file_extension: str) -> Language:
     """
-    Returns the corresponding programming language based on the given file extension.
+    Retrieves the programming language based on the given file extension.
 
     Args:
-        file_extension (str): The file extension of the programming file.
+        file_extension (str): The file extension to determine the programming language.
 
     Returns:
-        Language: The corresponding programming language if it exists in the mapping, otherwise Language.UNKNOWN.
+        Language: The programming language associated with the given file extension.
     """
     language_mapping = {
         ".py": Language.PYTHON,
@@ -28,40 +29,42 @@ def get_programming_language(file_extension: str) -> Language:
 
 def get_file_extension(file_name: str) -> str:
     """
-    Returns the extension of a file.
+    Return the extension of the file.
 
-    Args:
-        file_name (str): The name of the file including its extension.
+    Parameters:
+    file_name (str): The name of the file.
 
     Returns:
-        str: The extension of the file.
+    str: The file extension.
     """
     return os.path.splitext(file_name)[-1]
 
 
 def write_code_snippet_to_file(file_path: str, original_code: str, modified_code: str):
     """
-    This function replaces the code snippet in the file with the modified code snippet
+    Replace the original code snippet with the modified code in the given file.
+
+    Args:
+        file_path (str): The path to the file.
+        original_code (str): The code snippet to be replaced.
+        modified_code (str): The code snippet to replace the original code.
+
+    Returns:
+        None
     """
     with open(file_path, "r") as file:
         file_content = file.read()
         start_pos = file_content.find(original_code)
-        if start_pos != -1:  # Check if code_string is found in the original content
-            # Calculate the end position of code_string
+        if start_pos != -1:
             end_pos = start_pos + len(original_code)
-
-            # Replace code_string with modified_code_string in the original content
             modified_content = (
                 file_content[:start_pos] + modified_code + file_content[end_pos:]
             )
-
-            # Open the file in write mode
             with open(file_path, "w", encoding="utf-8") as file:
-                # Write the modified content to the file
                 file.write(modified_content)
 
 
-def extract_content_from_markdown_code_block(markdown_code_block, language) -> str:
+def extract_content_from_markdown_code_block(markdown_code_block) -> str:
     """
     Extracts the content from a markdown code block inside a string.
 
@@ -76,22 +79,6 @@ def extract_content_from_markdown_code_block(markdown_code_block, language) -> s
     match = re.search(pattern, markdown_code_block, re.DOTALL)
 
     if match:
-        # TODO fix this
-        # sometimes the doc comment has ``` block itself, which will break
-        # the regex pattern. In this case, we need to extract the all
-        # subsequent ``` blocks and append them to the first one
-        # subsequent_matches = re.findall("```\n(.*?)```", markdown_code_block, re.DOTALL)
-        # if subsequent_matches:
-        #     # join all subsequent code blocks
-        #     subsequent_code = "\n".join(subsequent_matches).strip()
-        #     # append the last block
-        #     last_match = re.findall("```(.*?)```", markdown_code_block, re.DOTALL)
-        #     if last_match:
-        #         last_code_block = last_match[-1].strip()
-        #         subsequent_code += "\n" + last_code_block
-        #     # return the first code block + subsequent code blocks
-        #     return match.group(1).strip() + "\n" + subsequent_code
-
         return match.group(1).strip()
     else:
         return markdown_code_block.strip()
@@ -99,12 +86,27 @@ def extract_content_from_markdown_code_block(markdown_code_block, language) -> s
 
 def get_bold_text(text):
     """
-    Returns the specified text formatted in bold. 
-    
-    Parameters:
-    - text (str): The text to be formatted.
-    
-    Returns:
-    str: The input text formatted in bold.
+    Returns the provided text in bold format.
+
+    :param text: The text to be formatted.
+    :return: The formatted text.
     """
     return f"\033[01m{text}\033[0m"
+
+
+def has_unstaged_changes(file):
+    """
+    Check if the given file has any unstaged changes in the Git repository.
+    
+    Args:
+        file (str): The file to check for unstaged changes.
+    
+    Returns:
+        bool: True if the file has unstaged changes, False otherwise.
+    """
+    try:
+        # Run the "git diff --quiet" command and capture its output
+        subprocess.check_output(["git", "diff", "--quiet", file])
+        return False  # No unstaged changes
+    except subprocess.CalledProcessError:
+        return True  # Unstaged changes exist

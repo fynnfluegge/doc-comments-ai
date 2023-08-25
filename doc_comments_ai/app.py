@@ -40,7 +40,10 @@ def run():
     file_name = args.dir
 
     if not os.path.isfile(file_name):
-        sys.exit(f"File {file_name} does not exist")
+        sys.exit(f"File {utils.get_bold_text(file_name)} does not exist")
+
+    if utils.has_unstaged_changes(file_name):
+        sys.exit(f"File {utils.get_bold_text(file_name)} has unstaged changes")
 
     if args.gpt4:
         llm_wrapper = llm.LLM(model="gpt-4")
@@ -62,7 +65,9 @@ def run():
         for node in treesitterNodes:
             method_name = utils.get_bold_text(node.name)
             if node.doc_comment:
-                print(f"Method {method_name} already has a doc comment. Skipping...")
+                print(
+                    f"⚠️  Method {method_name} already has a doc comment. Skipping..."
+                )
                 continue
 
             method_source_code = get_source_from_node(node.node)
@@ -77,7 +82,7 @@ def run():
             generated_doc_comments[
                 method_source_code
             ] = utils.extract_content_from_markdown_code_block(
-                documented_method_source_code, programming_language.value
+                documented_method_source_code
             )
 
             spinner.stop()
