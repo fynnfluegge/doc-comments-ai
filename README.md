@@ -23,7 +23,7 @@ Focus on writing your code, let AI write the documentation for you. With just a 
 - Treesitter integration
 
 > [!NOTE]
-> Review suggestions will only be applied to files without unstaged changes, so that nothing is overwritten.
+> Documentations will only be added to files without unstaged changes, so that nothing is overwritten.
 
 ## 🚀 Usage
 - `aicomments <RELATIVE_FILE_PATH>`: Create documentations for any method in the file which doesn't have any yet.
