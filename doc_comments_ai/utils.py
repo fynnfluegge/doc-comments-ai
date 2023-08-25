@@ -72,24 +72,25 @@ def extract_content_from_markdown_code_block(markdown_code_block, language) -> s
         str: The extracted content.
 
     """
-    pattern = f"```{language}\n(.*?)```"
+    pattern = r"```(?:[a-zA-Z0-9]+)?\n(.*?)```"
     match = re.search(pattern, markdown_code_block, re.DOTALL)
 
     if match:
+        # TODO fix this
         # sometimes the doc comment has ``` block itself, which will break
         # the regex pattern. In this case, we need to extract the all
         # subsequent ``` blocks and append them to the first one
-        subsequent_matches = re.findall("```\n(.*?)```", markdown_code_block, re.DOTALL)
-        if subsequent_matches:
-            # join all subsequent code blocks
-            subsequent_code = "\n".join(subsequent_matches).strip()
-            # append the last block
-            last_match = re.findall("```(.*?)```", markdown_code_block, re.DOTALL)
-            if last_match:
-                last_code_block = last_match[-1].strip()
-                subsequent_code += "\n" + last_code_block
-            # return the first code block + subsequent code blocks
-            return match.group(1).strip() + "\n" + subsequent_code
+        # subsequent_matches = re.findall("```\n(.*?)```", markdown_code_block, re.DOTALL)
+        # if subsequent_matches:
+        #     # join all subsequent code blocks
+        #     subsequent_code = "\n".join(subsequent_matches).strip()
+        #     # append the last block
+        #     last_match = re.findall("```(.*?)```", markdown_code_block, re.DOTALL)
+        #     if last_match:
+        #         last_code_block = last_match[-1].strip()
+        #         subsequent_code += "\n" + last_code_block
+        #     # return the first code block + subsequent code blocks
+        #     return match.group(1).strip() + "\n" + subsequent_code
 
         return match.group(1).strip()
     else:
@@ -97,4 +98,13 @@ def extract_content_from_markdown_code_block(markdown_code_block, language) -> s
 
 
 def get_bold_text(text):
+    """
+    Returns the specified text formatted in bold. 
+    
+    Parameters:
+    - text (str): The text to be formatted.
+    
+    Returns:
+    str: The input text formatted in bold.
+    """
     return f"\033[01m{text}\033[0m"
