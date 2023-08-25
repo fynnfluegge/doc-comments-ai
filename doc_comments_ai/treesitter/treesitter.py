@@ -7,7 +7,10 @@ from doc_comments_ai.treesitter.treesitter_registry import TreesitterRegistry
 
 class TreesitterNode:
     def __init__(
-        self, name: str | bytes | None, doc_comment: str | None, node: tree_sitter.Node
+        self,
+        name: "str | bytes | None",
+        doc_comment: "str | None",
+        node: tree_sitter.Node,
     ):
         self.name = name
         self.doc_comment = doc_comment
