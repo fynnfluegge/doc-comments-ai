@@ -7,4 +7,5 @@ from tests.fixtures.code_fixture_rs import rust_code_fixture
 from tests.fixtures.response_fixtures import (
     response_fixture,
     response_fixture_language_enclosed,
+    response_fixture_with_text,
 )
