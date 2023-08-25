@@ -98,4 +98,13 @@ def extract_content_from_markdown_code_block(markdown_code_block, language) -> s
 
 
 def get_bold_text(text):
+    """
+    Returns the specified text formatted in bold. 
+    
+    Parameters:
+    - text (str): The text to be formatted.
+    
+    Returns:
+    str: The input text formatted in bold.
+    """
     return f"\033[01m{text}\033[0m"

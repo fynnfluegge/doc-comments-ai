@@ -31,6 +31,4 @@ class LLM:
 
         documented_code = self.chain.run(input)
 
-        print(documented_code)
-
         return documented_code
