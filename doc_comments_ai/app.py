@@ -2,6 +2,7 @@ import os
 import argparse
 import sys
 from doc_comments_ai import utils, llm, domain
+from doc_comments_ai.llm import GptModel
 from doc_comments_ai.treesitter.treesitter import (
     Treesitter,
     TreesitterNode,
@@ -31,6 +32,11 @@ def run():
         action="store_true",
         help="Uses GPT-4 (default GPT-3.5).",
     )
+    parser.add_argument(
+        "--guided",
+        action="store_true",
+        help="User will get asked to confirm the doc generation for each method.",
+    )
 
     if sys.argv.__len__() < 2:
         sys.exit("Please provide a file")
@@ -46,7 +52,7 @@ def run():
         sys.exit(f"File {utils.get_bold_text(file_name)} has unstaged changes")
 
     if args.gpt4:
-        llm_wrapper = llm.LLM(model="gpt-4")
+        llm_wrapper = llm.LLM(model=GptModel.GPT_4)
     else:
         llm_wrapper = llm.LLM()
 
@@ -64,6 +70,11 @@ def run():
 
         for node in treesitterNodes:
             method_name = utils.get_bold_text(node.name)
+
+            print(f"Generate doc for {utils.get_bold_text(method_name)}? (y/n)")
+            if not input().lower() == "y":
+                continue
+
             if node.doc_comment:
                 print(
                     f"⚠️  Method {method_name} already has a doc comment. Skipping..."
@@ -71,6 +82,15 @@ def run():
                 continue
 
             method_source_code = get_source_from_node(node.node)
+
+            tokens = utils.count_tokens(method_source_code)
+            if tokens > 2048 and not args.gpt4:
+                print(
+                    f"⚠️  Method {method_name} has too many tokens. "
+                    f"Consider using {utils.get_bold_text('--gpt4')}. "
+                    "Skipping for now..."
+                )
+                continue
 
             spinner = yaspin(text=f"🔧 Generating doc comment for {method_name}...")
             spinner.start()
