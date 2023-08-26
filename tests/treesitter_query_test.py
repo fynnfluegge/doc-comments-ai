@@ -141,5 +141,28 @@ def test_rust_qery(rust_code_fixture):
 /// ```"""
     )
 
-    # print(treesitterNodes[1].doc_comment)
     assert treesitterNodes[1].doc_comment is None
+
+
+@pytest.mark.usefixtures("kotlin_code_fixture")
+def test_kotlin_qery(kotlin_code_fixture):
+    tree_sitter = Treesitter.create_treesitter(Language.KOTLIN)
+    treesitterNodes: list[TreesitterNode] = tree_sitter.parse(
+        kotlin_code_fixture.encode()
+    )
+
+    assert treesitterNodes.__len__() == 2
+
+    assert treesitterNodes[0].name == "getProgrammingLanguage"
+
+    assert treesitterNodes[1].name == "getFileExtension"
+
+    assert (
+        treesitterNodes[0].doc_comment
+        == """/**
+ * Gets the corresponding programming language based on the given file extension.
+ *
+ * @param fileExtension The file extension of the programming file.
+ * @return The corresponding programming language if it exists in the mapping, otherwise Language.UNKNOWN.
+ */"""
+    )
