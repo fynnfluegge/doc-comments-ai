@@ -71,9 +71,10 @@ def run():
         for node in treesitterNodes:
             method_name = utils.get_bold_text(node.name)
 
-            print(f"Generate doc for {utils.get_bold_text(method_name)}? (y/n)")
-            if not input().lower() == "y":
-                continue
+            if args.guided:
+                print(f"Generate doc for {utils.get_bold_text(method_name)}? (y/n)")
+                if not input().lower() == "y":
+                    continue
 
             if node.doc_comment:
                 print(
