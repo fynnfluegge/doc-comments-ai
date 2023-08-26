@@ -1,6 +1,7 @@
 import os
 import re
 import subprocess
+import tiktoken
 from doc_comments_ai.constants import Language
 
 
@@ -97,10 +98,10 @@ def get_bold_text(text):
 def has_unstaged_changes(file):
     """
     Check if the given file has any unstaged changes in the Git repository.
-    
+
     Args:
         file (str): The file to check for unstaged changes.
-    
+
     Returns:
         bool: True if the file has unstaged changes, False otherwise.
     """
@@ -110,3 +111,10 @@ def has_unstaged_changes(file):
         return False  # No unstaged changes
     except subprocess.CalledProcessError:
         return True  # Unstaged changes exist
+
+
+# Return the number of tokens in a string
+def count_tokens(text):
+    encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
+    tokenized = encoding.encode(text)
+    return len(tokenized)

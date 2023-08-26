@@ -19,6 +19,7 @@ Focus on writing your code, let AI write the documentation for you. With just a 
 
 ## ✨ Features
 - Create documentation comment blocks for all methods in a file
+  - e.g. Javadoc, JSDoc, Docstring, Rustdoc
 - Create inline documentation comments in method bodies
 - Treesitter integration
 
@@ -29,6 +30,7 @@ Focus on writing your code, let AI write the documentation for you. With just a 
 - `aicomments <RELATIVE_FILE_PATH>`: Create documentations for any method in the file which doesn't have any yet.
 - `aicomments <RELATIVE_FILE_PATH> --inline`: Create also documentation comments in the method body.
 - `aicomments <RELATIVE_FILE_PATH> --gpt4`: Use GPT-4 model (Default is GPT-3.5).
+- `aicomments <RELATIVE_FILE_PATH> --guided`: Guided mode, confirm documentation generation for each method. 
 
 ## ⚙️ Supported Languages
 - [x] Python
