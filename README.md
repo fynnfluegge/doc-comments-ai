@@ -19,6 +19,7 @@ Focus on writing your code, let AI write the documentation for you. With just a 
 
 ## ✨ Features
 - Create documentation comment blocks for all methods in a file
+  - e.g. Javadoc, JSDoc, Docstring, Rustdoc
 - Create inline documentation comments in method bodies
 - Treesitter integration
 
