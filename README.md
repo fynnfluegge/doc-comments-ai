@@ -38,7 +38,7 @@ Focus on writing your code, let AI write the documentation for you. With just a 
 - [x] Javascript
 - [x] Java
 - [x] Rust
-- [ ] Kotlin
+- [x] Kotlin
 - [ ] Go
 - [ ] C++
 - [ ] C
