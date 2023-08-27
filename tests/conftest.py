@@ -5,6 +5,7 @@ from tests.fixtures.code_fixture_js import javascript_code_fixture
 from tests.fixtures.code_fixture_ts import typescript_code_fixture
 from tests.fixtures.code_fixture_rs import rust_code_fixture
 from tests.fixtures.code_fixture_kt import kotlin_code_fixture
+from tests.fixtures.code_fixture_go import go_code_fixture
 from tests.fixtures.response_fixtures import (
     response_fixture,
     response_fixture_language_enclosed,

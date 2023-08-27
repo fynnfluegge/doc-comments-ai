@@ -4,3 +4,4 @@ from doc_comments_ai.treesitter.treesitter_js import TreesitterJavascript
 from doc_comments_ai.treesitter.treesitter_ts import TreesitterTypescript
 from doc_comments_ai.treesitter.treesitter_rs import TreesitterRust
 from doc_comments_ai.treesitter.treesitter_kt import TreesitterKotlin
+from doc_comments_ai.treesitter.treesitter_go import TreesitterGo
