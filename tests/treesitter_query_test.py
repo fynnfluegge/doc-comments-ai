@@ -166,3 +166,22 @@ def test_kotlin_qery(kotlin_code_fixture):
  * @return The corresponding programming language if it exists in the mapping, otherwise Language.UNKNOWN.
  */"""
     )
+
+
+@pytest.mark.usefixtures("go_code_fixture")
+def test_go_qery(go_code_fixture):
+    tree_sitter = Treesitter.create_treesitter(Language.GO)
+    treesitterNodes: list[TreesitterNode] = tree_sitter.parse(go_code_fixture.encode())
+
+    assert treesitterNodes.__len__() == 2
+
+    assert treesitterNodes[0].name == "getProgrammingLanguage"
+
+    assert treesitterNodes[1].name == "getFileExtension"
+
+    assert (
+        treesitterNodes[0].doc_comment
+        == """// getProgrammingLanguage gets the corresponding programming language based on the given file extension."""
+    )
+
+    assert treesitterNodes[1].doc_comment is None

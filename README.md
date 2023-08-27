@@ -39,7 +39,7 @@ Focus on writing your code, let AI write the documentation for you. With just a 
 - [x] Java
 - [x] Rust
 - [x] Kotlin
-- [ ] Go
+- [x] Go
 - [ ] C++
 - [ ] C
 - [ ] Scala
