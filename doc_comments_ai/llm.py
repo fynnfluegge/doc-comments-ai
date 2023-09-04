@@ -14,7 +14,8 @@ class LLM:
         self.llm = ChatOpenAI(temperature=0.9, max_tokens=max_tokens, model=model.value)
         self.template = (
             "I have this {language} method:\n{code}\nAdd a doc comment to the method. "
-            "Return the method with the doc comment as a markdown code block. "
+            "The doc comment should describe what the method does. "
+            "Return the method implementaion with the doc comment as a markdown code block. "
             "{inline_comments}"
             "Don't include any explanations in your response."
         )
