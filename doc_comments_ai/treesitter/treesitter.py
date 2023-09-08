@@ -1,6 +1,8 @@
-import tree_sitter
 from abc import ABC, abstractmethod
+
+import tree_sitter
 from tree_sitter_languages import get_language, get_parser
+
 from doc_comments_ai.constants import Language
 from doc_comments_ai.treesitter.treesitter_registry import TreesitterRegistry
 

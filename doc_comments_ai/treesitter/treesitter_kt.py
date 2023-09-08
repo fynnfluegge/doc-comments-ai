@@ -14,7 +14,6 @@ class TreesitterKotlin(Treesitter):
 
     def parse(self, file_bytes: bytes) -> list[TreesitterNode]:
         super().parse(file_bytes)
-        print(self.tree.root_node.sexp())
         result = []
         methods = self._query_all_methods(self.tree.root_node)
         for method in methods:

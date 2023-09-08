@@ -1,14 +1,13 @@
-import os
 import argparse
+import os
 import sys
-from doc_comments_ai import utils, llm, domain
-from doc_comments_ai.llm import GptModel
-from doc_comments_ai.treesitter.treesitter import (
-    Treesitter,
-    TreesitterNode,
-    get_source_from_node,
-)
+
 from yaspin import yaspin
+
+from doc_comments_ai import domain, llm, utils
+from doc_comments_ai.llm import GptModel
+from doc_comments_ai.treesitter.treesitter import (Treesitter, TreesitterNode,
+                                                   get_source_from_node)
 
 
 def run():
