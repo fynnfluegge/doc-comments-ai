@@ -1,6 +1,8 @@
 from enum import Enum
+
+from langchain import LLMChain, PromptTemplate
 from langchain.chat_models import ChatOpenAI
-from langchain import PromptTemplate, LLMChain
+from langchain.llms import LlamaCpp
 
 
 class GptModel(Enum):
@@ -9,14 +11,32 @@ class GptModel(Enum):
 
 
 class LLM:
-    def __init__(self, model: GptModel = GptModel.GPT_35):
+    def __init__(
+        self,
+        model: GptModel = GptModel.GPT_35,
+        local: bool = False,
+        model_path: str | None = None,
+    ):
         max_tokens = 2048 if model == GptModel.GPT_35 else 4096
-        self.llm = ChatOpenAI(temperature=0.9, max_tokens=max_tokens, model=model.value)
+        if local:
+            if model_path is None:
+                raise ValueError("model_path must be set when local is True")
+
+            self.llm = LlamaCpp(
+                model_path=model_path,
+                temperature=0.9,
+                max_tokens=max_tokens,
+                verbose=False,
+            )
+        else:
+            self.llm = ChatOpenAI(
+                temperature=0.9, max_tokens=max_tokens, model=model.value
+            )
         self.template = (
-            "I have this {language} method:\n{code}\nAdd a doc comment to the method. "
+            "Add a detailed doc comment to the following {language} method:\n{code}\n"
             "The doc comment should describe what the method does. "
+            "{inline_comments} "
             "Return the method implementaion with the doc comment as a markdown code block. "
-            "{inline_comments}"
             "Don't include any explanations in your response."
         )
         self.prompt = PromptTemplate(
@@ -31,7 +51,9 @@ class LLM:
         """
 
         if inline:
-            inline_comments = "Add inline comments to the code if necessary."
+            inline_comments = (
+                "Add inline comments to the method body where it makes sense."
+            )
         else:
             inline_comments = ""
 

@@ -2,13 +2,13 @@ import pytest
 
 from doc_comments_ai import domain
 from doc_comments_ai.constants import Language
-from doc_comments_ai.treesitter.treesitter import Treesitter, TreesitterNode
+from doc_comments_ai.treesitter.treesitter import Treesitter, TreesitterMethodNode
 
 
 @pytest.mark.usefixtures("python_code_fixture")
 def test_python_qery(python_code_fixture):
     treesitter = Treesitter.create_treesitter(Language.PYTHON)
-    treesitterNodes: list[TreesitterNode] = treesitter.parse(
+    treesitterNodes: list[TreesitterMethodNode] = treesitter.parse(
         python_code_fixture.encode()
     )
 
@@ -37,7 +37,9 @@ def test_python_qery(python_code_fixture):
 @pytest.mark.usefixtures("java_code_fixture")
 def test_java_qery(java_code_fixture):
     treesitter = Treesitter.create_treesitter(Language.JAVA)
-    treesitterNodes: list[TreesitterNode] = treesitter.parse(java_code_fixture.encode())
+    treesitterNodes: list[TreesitterMethodNode] = treesitter.parse(
+        java_code_fixture.encode()
+    )
 
     assert treesitterNodes.__len__() == 2
 
@@ -61,7 +63,7 @@ def test_java_qery(java_code_fixture):
 @pytest.mark.usefixtures("javascript_code_fixture")
 def test_javascript_qery(javascript_code_fixture):
     treesitter = Treesitter.create_treesitter(Language.JAVASCRIPT)
-    treesitterNodes: list[TreesitterNode] = treesitter.parse(
+    treesitterNodes: list[TreesitterMethodNode] = treesitter.parse(
         javascript_code_fixture.encode()
     )
 
@@ -87,7 +89,7 @@ def test_javascript_qery(javascript_code_fixture):
 @pytest.mark.usefixtures("typescript_code_fixture")
 def test_typescript_qery(typescript_code_fixture):
     treesitter = Treesitter.create_treesitter(Language.TYPESCRIPT)
-    treesitterNodes: list[TreesitterNode] = treesitter.parse(
+    treesitterNodes: list[TreesitterMethodNode] = treesitter.parse(
         typescript_code_fixture.encode()
     )
 
@@ -113,7 +115,9 @@ def test_typescript_qery(typescript_code_fixture):
 @pytest.mark.usefixtures("rust_code_fixture")
 def test_rust_qery(rust_code_fixture):
     treesitter = Treesitter.create_treesitter(Language.RUST)
-    treesitterNodes: list[TreesitterNode] = treesitter.parse(rust_code_fixture.encode())
+    treesitterNodes: list[TreesitterMethodNode] = treesitter.parse(
+        rust_code_fixture.encode()
+    )
 
     assert treesitterNodes.__len__() == 2
 
@@ -148,7 +152,7 @@ def test_rust_qery(rust_code_fixture):
 @pytest.mark.usefixtures("kotlin_code_fixture")
 def test_kotlin_qery(kotlin_code_fixture):
     tree_sitter = Treesitter.create_treesitter(Language.KOTLIN)
-    treesitterNodes: list[TreesitterNode] = tree_sitter.parse(
+    treesitterNodes: list[TreesitterMethodNode] = tree_sitter.parse(
         kotlin_code_fixture.encode()
     )
 
@@ -172,7 +176,9 @@ def test_kotlin_qery(kotlin_code_fixture):
 @pytest.mark.usefixtures("go_code_fixture")
 def test_go_qery(go_code_fixture):
     tree_sitter = Treesitter.create_treesitter(Language.GO)
-    treesitterNodes: list[TreesitterNode] = tree_sitter.parse(go_code_fixture.encode())
+    treesitterNodes: list[TreesitterMethodNode] = tree_sitter.parse(
+        go_code_fixture.encode()
+    )
 
     assert treesitterNodes.__len__() == 2
 

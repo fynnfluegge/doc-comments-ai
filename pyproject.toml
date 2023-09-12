@@ -16,6 +16,7 @@ tiktoken = "^0.4.0"
 openai = "^0.27.8"
 yaspin = "^3.0.0"
 pytest = "^7.4.0"
+llama-cpp-python = "^0.1.84"
 
 [tool.poetry.scripts]
 aicomment = "doc_comments_ai.__main__:main"

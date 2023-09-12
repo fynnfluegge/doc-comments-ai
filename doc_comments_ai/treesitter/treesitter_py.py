@@ -1,25 +1,22 @@
 import tree_sitter
-from doc_comments_ai.treesitter.treesitter import (
-    Treesitter,
-    TreesitterNode,
-    get_source_from_node,
-)
-from doc_comments_ai.treesitter.treesitter_registry import TreesitterRegistry
+
 from doc_comments_ai.constants import Language
+from doc_comments_ai.treesitter.treesitter import Treesitter, TreesitterMethodNode
+from doc_comments_ai.treesitter.treesitter_registry import TreesitterRegistry
 
 
 class TreesitterPython(Treesitter):
     def __init__(self):
         super().__init__(Language.PYTHON)
 
-    def parse(self, file_bytes: bytes) -> list[TreesitterNode]:
+    def parse(self, file_bytes: bytes) -> list[TreesitterMethodNode]:
         super().parse(file_bytes)
         result = []
         methods = self._query_all_methods(self.tree.root_node)
         for method in methods:
             method_name = self._query_method_name(method)
             doc_comment = self._query_doc_comment(method)
-            result.append(TreesitterNode(method_name, doc_comment, method))
+            result.append(TreesitterMethodNode(method_name, doc_comment, method))
         return result
 
     def _query_method_name(self, node: tree_sitter.Node):
@@ -54,7 +51,7 @@ class TreesitterPython(Treesitter):
         doc_strs = doc_str_query.captures(node)
 
         if doc_strs:
-            return get_source_from_node(doc_strs[0][0])
+            return doc_strs[0][0].text.decode()
         else:
             return None
 
