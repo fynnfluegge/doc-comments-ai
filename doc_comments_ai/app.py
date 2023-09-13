@@ -86,16 +86,16 @@ def run():
         for node in treesitterNodes:
             method_name = utils.get_bold_text(node.name)
 
-            if args.guided:
-                print(f"Generate doc for {utils.get_bold_text(method_name)}? (y/n)")
-                if not input().lower() == "y":
-                    continue
-
             if node.doc_comment:
                 print(
                     f"⚠️  Method {method_name} already has a doc comment. Skipping..."
                 )
                 continue
+
+            if args.guided:
+                print(f"Generate doc for {utils.get_bold_text(method_name)}? (y/n)")
+                if not input().lower() == "y":
+                    continue
 
             method_source_code = node.node.text.decode()
 
