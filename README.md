@@ -88,6 +88,8 @@ pipx install doc-comments-ai
 ### 2. Local LLM usage
 By using a local LLM no API key is required. The recommended way for the installation is `pip` since `CMake` arguments needs to be passed to the `llama.cpp` build for better performance which is not possible with `pipx`.
 You can also use the OpenAI API with this installation.
+
+> [!WARNING]  
 > If your are sensitive to your global `pip` packages you may consider to checkout the repo and install and run it manually with `poetry` or `conda`.
 
 See the following instructions for your machine with `CMake`: [installation-with-hardware-acceleration](https://github.com/abetlen/llama-cpp-python#installation-with-hardware-acceleration)
@@ -100,4 +102,5 @@ To install `doc-comments.ai` which should use your previously installed `llama.c
 ```
 pip install doc-comments-ai
 ```
-
+> [!IMPORTANT]  
+> The results by using a local LLM will highly be affected by your selected model. To get similar results compared to GPT-3.5/4 you need to select very large models which require a powerful hardware.
