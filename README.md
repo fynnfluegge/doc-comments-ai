@@ -91,13 +91,13 @@ You can also use the OpenAI API with this installation.
 > If your are sensitive to your global `pip` packages you may consider to checkout the repo and install and run it manually with `poetry` or `conda`.
 
 See the following instructions for your machine with `CMake`: [installation-with-hardware-acceleration](https://github.com/abetlen/llama-cpp-python#installation-with-hardware-acceleration)
-and install `llama-cpp-python` with your desired hardware acceleration, e.g. for Metal on Mac run
+and install `llama-cpp-python` with your desired hardware acceleration, e.g. for Metal on Mac run:
 ```
 CMAKE_ARGS="-DLLAMA_METAL=on" pip install llama-cpp-python
 ```
 
-To install `doc-comments.ai` which should use your previously installed `llama.cpp` build run
+To install `doc-comments.ai` which should use your previously installed `llama.cpp` build run:
 ```
-pip install doc-comments.ai
+pip install doc-comments-ai
 ```
 
