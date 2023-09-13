@@ -20,7 +20,7 @@ class LLM:
         max_tokens = 2048 if model == GptModel.GPT_35 else 4096
         if local:
             if model_path is None:
-                raise ValueError("model_path must be set when local is True")
+                raise ValueError("model_path must be set in local mode.")
 
             self.llm = LlamaCpp(
                 model_path=model_path,

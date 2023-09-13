@@ -31,11 +31,6 @@ def run():
         help="Path to the local model.",
     )
     parser.add_argument(
-        "--model",
-        type=str,
-        help="Name of the model.",
-    )
-    parser.add_argument(
         "--inline",
         action="store_true",
         help="Adds inline comments to the code if necessary.",
