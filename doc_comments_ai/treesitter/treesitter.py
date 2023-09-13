@@ -7,7 +7,7 @@ from doc_comments_ai.constants import Language
 from doc_comments_ai.treesitter.treesitter_registry import TreesitterRegistry
 
 
-class TreesitterNode:
+class TreesitterMethodNode:
     def __init__(
         self,
         name: "str | bytes | None",
@@ -16,6 +16,7 @@ class TreesitterNode:
     ):
         self.name = name
         self.doc_comment = doc_comment
+        self.method_source_code = node.text.decode()
         self.node = node
 
 
@@ -29,7 +30,7 @@ class Treesitter(ABC):
         return TreesitterRegistry.create_treesitter(language)
 
     @abstractmethod
-    def parse(self, file_bytes: bytes) -> list[TreesitterNode]:
+    def parse(self, file_bytes: bytes) -> list[TreesitterMethodNode]:
         self.tree = self.parser.parse(file_bytes)
         pass
 
@@ -47,7 +48,3 @@ class Treesitter(ABC):
         This function returns the name of a method node
         """
         pass
-
-
-def get_source_from_node(node: tree_sitter.Node) -> str:
-    return node.text.decode()

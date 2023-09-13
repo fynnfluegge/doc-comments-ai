@@ -6,8 +6,7 @@ from yaspin import yaspin
 
 from doc_comments_ai import domain, llm, utils
 from doc_comments_ai.llm import GptModel
-from doc_comments_ai.treesitter.treesitter import (Treesitter, TreesitterNode,
-                                                   get_source_from_node)
+from doc_comments_ai.treesitter import Treesitter, TreesitterMethodNode
 
 
 def run():
@@ -21,6 +20,16 @@ def run():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("dir", nargs="?", default=os.getcwd())
+    parser.add_argument(
+        "--local",
+        action="store_true",
+        help="Uses the local version of the LLM model.",
+    )
+    parser.add_argument(
+        "--model_path",
+        type=str,
+        help="Path to the local model.",
+    )
     parser.add_argument(
         "--inline",
         action="store_true",
@@ -53,7 +62,7 @@ def run():
     if args.gpt4:
         llm_wrapper = llm.LLM(model=GptModel.GPT_4)
     else:
-        llm_wrapper = llm.LLM()
+        llm_wrapper = llm.LLM(local=args.local, model_path=args.model_path)
 
     generated_doc_comments = {}
 
@@ -65,15 +74,12 @@ def run():
         programming_language = utils.get_programming_language(file_extension)
 
         treesitter_parser = Treesitter.create_treesitter(programming_language)
-        treesitterNodes: list[TreesitterNode] = treesitter_parser.parse(file_bytes)
+        treesitterNodes: list[TreesitterMethodNode] = treesitter_parser.parse(
+            file_bytes
+        )
 
         for node in treesitterNodes:
             method_name = utils.get_bold_text(node.name)
-
-            if args.guided:
-                print(f"Generate doc for {utils.get_bold_text(method_name)}? (y/n)")
-                if not input().lower() == "y":
-                    continue
 
             if node.doc_comment:
                 print(
@@ -81,7 +87,12 @@ def run():
                 )
                 continue
 
-            method_source_code = get_source_from_node(node.node)
+            if args.guided:
+                print(f"Generate doc for {utils.get_bold_text(method_name)}? (y/n)")
+                if not input().lower() == "y":
+                    continue
+
+            method_source_code = node.node.text.decode()
 
             tokens = utils.count_tokens(method_source_code)
             if tokens > 2048 and not args.gpt4:
