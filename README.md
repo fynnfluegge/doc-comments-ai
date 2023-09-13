@@ -10,11 +10,10 @@
 
 <div align="center">
 
-Focus on writing your code, let AI write the documentation for you. 
-
+Focus on writing your code, let LLMs write the documentation for you.  
 With just a few keystrokes in your terminal by using the OpenAI API or 100% local LLMs without any data leaks.
 
-Powered by [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](https://github.com/ggerganov/llama.cpp) and [treesitter](https://github.com/tree-sitter/tree-sitter).
+Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](https://github.com/ggerganov/llama.cpp) and [treesitter](https://github.com/tree-sitter/tree-sitter).
 
 ![ezgif-4-53d6e634af](https://github.com/fynnfluegge/doc-comments.ai/assets/16321871/8f2756cb-36f9-43c6-94b1-658b89b49786)
 
@@ -23,13 +22,13 @@ Powered by [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](ht
 
 ## ✨ Features
 - 📝 Create documentation comment blocks for all methods in a file
-  - e.g. Javadoc, JSDoc, Docstring, Rustdoc
+  - e.g. Javadoc, JSDoc, Docstring, Rustdoc etc.
 - ✍️ Create inline documentation comments in method bodies
 - 🌳 Treesitter integration
 - 💻 Local LLM support
 
-> [!NOTE]
-> Documentations will only be added to files without unstaged changes, so that nothing is overwritten.
+> [!NOTE]  
+> Documentations will only be added to files without unstaged changes, so nothing is overwritten.
 
 ## 🚀 Usage
 Create documentations for any method in the file with GPT-3.5 Turbo model:
@@ -87,18 +86,22 @@ pipx install doc-comments-ai
 
 ### 2. Local LLM usage
 By using a local LLM no API key is required. The recommended way for the installation is `pip` since `CMake` arguments needs to be passed to the `llama.cpp` build for better performance which is not possible with `pipx`.
-You can also use the OpenAI API with this installation.
+However, using `pipx` will install the `llama.cpp` binding without hardware acceleration which is not recommended to get decent results.
+
+> [!NOTE]  
+> You can also use the OpenAI API with this installation by specifying your `$OPENAI_API_KEY` as described previously.
 
 > [!WARNING]  
-> If your are sensitive to your global `pip` packages you may consider to checkout the repo and install and run it manually with `poetry` or `conda`.
+> If your are sensitive to your global `pip` packages consider to checkout the repo and install and run it manually with `poetry` or `conda`.
 
-See the following instructions for your machine with `CMake`: [installation-with-hardware-acceleration](https://github.com/abetlen/llama-cpp-python#installation-with-hardware-acceleration)
+Have a look at the following instructions for your machine with `CMake` 
+[installation-with-hardware-acceleration](https://github.com/abetlen/llama-cpp-python#installation-with-hardware-acceleration)
 and install `llama-cpp-python` with your desired hardware acceleration, e.g. for Metal on Mac run:
-```
+```bash
 CMAKE_ARGS="-DLLAMA_METAL=on" pip install llama-cpp-python
 ```
 
-To install `doc-comments.ai` which should use your previously installed `llama.cpp` build run:
+To install `doc-comments-ai` which should use your previously installed `llama.cpp` binding run:
 ```
 pip install doc-comments-ai
 ```
