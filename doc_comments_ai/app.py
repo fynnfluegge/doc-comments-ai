@@ -21,12 +21,7 @@ def run():
     parser = argparse.ArgumentParser()
     parser.add_argument("dir", nargs="?", default=os.getcwd())
     parser.add_argument(
-        "--local",
-        action="store_true",
-        help="Uses the local version of the LLM model.",
-    )
-    parser.add_argument(
-        "--model_path",
+        "--local_model",
         type=str,
         help="Path to the local model.",
     )
@@ -62,7 +57,7 @@ def run():
     if args.gpt4:
         llm_wrapper = llm.LLM(model=GptModel.GPT_4)
     else:
-        llm_wrapper = llm.LLM(local=args.local, model_path=args.model_path)
+        llm_wrapper = llm.LLM(local_model=args.local_model)
 
     generated_doc_comments = {}
 
