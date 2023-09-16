@@ -104,5 +104,5 @@ pipx install doc-comments-ai
 ### 2. Local LLM usage
 
 By using a local LLM no API key is required. On first usage of `local_model` you will be asked for confirmation to intall `llama-cpp-python` with its dependencies.
-The installation process will take care of the hardware-accelerated build tailored to your hardware and OS. For details see:
+The installation process will take care of the hardware-accelerated build tailored to your hardware and OS. For further details see:
 [installation-with-hardware-acceleration](https://github.com/abetlen/llama-cpp-python#installation-with-hardware-acceleration)
