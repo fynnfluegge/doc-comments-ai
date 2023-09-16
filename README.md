@@ -114,7 +114,8 @@ To download a model from huggingface for local usage the most convenient way is 
 ```
 huggingface-cli download TheBloke/CodeLlama-13B-Python-GGUF codellama-13b-python.Q5_K_M.gguf
 ```
-This will download the `codellama-13b-python.Q5_K_M` model to `~/.cache/huggingface/`. 
+This will download the `codellama-13b-python.Q5_K_M` model to `~/.cache/huggingface/`.
+After the download has finished the absolute path of the `.gguf` file is printed to the console which can be used as the value for `local_model`.
 
 > [!IMPORTANT]  
 > Since `llama.cpp` is used the model must be in the `.gguf` format.
