@@ -123,6 +123,15 @@ def has_unstaged_changes(file):
 
 
 def count_tokens(text):
+    """
+    Returns the number of tokens in the given text.
+
+    Args:
+    text (str): The input text to count tokens from.
+
+    Returns:
+    int: The number of tokens in the text.
+    """
     encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
     tokenized = encoding.encode(text)
     return len(tokenized)
