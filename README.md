@@ -60,9 +60,12 @@ aicomments <RELATIVE_FILE_PATH> --guided
 Use a local LLM on your machine:
 
 ```
-aicomments <RELATIVE_FILE_PATH> --local_model <RELATIVE_MODEL_PATH>
+aicomments <RELATIVE_FILE_PATH> --local_model <MODEL_PATH>
 ```
 
+> [!NOTE]  
+> How to download models from huggingface for local usage see [Local LLM usage](Readme.md#2-local-llm-usage)
+ 
 > [!IMPORTANT]  
 > The results by using a local LLM will highly be affected by your selected model. To get similar results compared to GPT-3.5/4 you need to select very large models which require a powerful hardware.
 
@@ -106,3 +109,12 @@ pipx install doc-comments-ai
 By using a local LLM no API key is required. On first usage of `local_model` you will be asked for confirmation to intall `llama-cpp-python` with its dependencies.
 The installation process will take care of the hardware-accelerated build tailored to your hardware and OS. For further details see:
 [installation-with-hardware-acceleration](https://github.com/abetlen/llama-cpp-python#installation-with-hardware-acceleration)
+
+To download a model from huggingface for local usage the most convenient way is using the `huggingface-cli`:
+```
+huggingface-cli download TheBloke/CodeLlama-13B-Python-GGUF codellama-13b-python.Q5_K_M.gguf
+```
+This will download the `codellama-13b-python.Q5_K_M` model to `~/.cache/huggingface/`. 
+
+> [!IMPORTANT]  
+> Since `llama.cpp` is used the model must be in the `.gguf` format.
