@@ -6,6 +6,7 @@
 [![Publish](https://github.com/fynnfluegge/doc-comments.ai/actions/workflows/publish.yaml/badge.svg)](https://github.com/fynnfluegge/doc-comments.ai/actions/workflows/publish.yaml)
 <img src="https://img.shields.io/badge/License-MIT-green.svg"/>
 </a>
+
 </div>
 
 <div align="center">
@@ -19,8 +20,8 @@ Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](ht
 
 </div>
 
-
 ## ✨ Features
+
 - 📝 Create documentation comment blocks for all methods in a file
   - e.g. Javadoc, JSDoc, Docstring, Rustdoc etc.
 - ✍️ Create inline documentation comments in method bodies
@@ -31,28 +32,42 @@ Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](ht
 > Documentations will only be added to files without unstaged changes, so nothing is overwritten.
 
 ## 🚀 Usage
+
 Create documentations for any method in the file with GPT-3.5 Turbo model:
+
 ```
 aicomments <RELATIVE_FILE_PATH>
 ```
+
 Create also documentation comments in the method body:
+
 ```
 aicomments <RELATIVE_FILE_PATH> --inline
 ```
+
 Use GPT-4 model (Default is GPT-3.5):
+
 ```
 aicomments <RELATIVE_FILE_PATH> --gpt4
 ```
+
 Guided mode, confirm documentation generation for each method:
+
 ```
 aicomments <RELATIVE_FILE_PATH> --guided
 ```
+
 Use a local LLM on your machine:
+
 ```
-aicomments <RELATIVE_FILE_PATH> --local --model_path <RELATIVE_MODEL_PATH>
-``` 
+aicomments <RELATIVE_FILE_PATH> --local_model <RELATIVE_MODEL_PATH>
+```
+
+> [!IMPORTANT]  
+> The results by using a local LLM will highly be affected by your selected model. To get similar results compared to GPT-3.5/4 you need to select very large models which require a powerful hardware.
 
 ## ⚙️ Supported Languages
+
 - [x] Python
 - [x] Typescript
 - [x] Javascript
@@ -69,7 +84,9 @@ aicomments <RELATIVE_FILE_PATH> --local --model_path <RELATIVE_MODEL_PATH>
 - Python >= 3.9
 
 ## 🔧 Installation
+
 ### 1. OpenAI API usage
+
 Create your personal OpenAI API key and add it as `$OPENAI_API_KEY` to your environment with:
 
 ```
@@ -85,25 +102,7 @@ pipx install doc-comments-ai
 > It is recommended to use `pipx` for installation, nonetheless it is also possible to use `pip`.
 
 ### 2. Local LLM usage
-By using a local LLM no API key is required. The recommended way for the installation is `pip` since `CMake` arguments needs to be passed to the `llama.cpp` build for better performance which is not possible with `pipx`.
-However, using `pipx` will install the `llama.cpp` binding without hardware acceleration which is not recommended to get decent results.
 
-> [!NOTE]  
-> You can also use the OpenAI API with this installation by specifying your `$OPENAI_API_KEY` as described previously.
-
-> [!WARNING]  
-> If your are sensitive to your global `pip` packages consider to checkout the repo and install and run it manually with `poetry` or `conda`.
-
-Have a look at the following instructions for your machine with `CMake` 
+By using a local LLM no API key is required. On first usage of `local_model` you will be asked for confirmation to intall `llama-cpp-python` with its dependencies.
+The installation process will take care of the hardware-accelerated build tailored to your hardware and OS. For details see:
 [installation-with-hardware-acceleration](https://github.com/abetlen/llama-cpp-python#installation-with-hardware-acceleration)
-and install `llama-cpp-python` with your desired hardware acceleration, e.g. for Metal on Mac run:
-```bash
-CMAKE_ARGS="-DLLAMA_METAL=on" pip install llama-cpp-python
-```
-
-To install `doc-comments-ai` which should use your previously installed `llama.cpp` binding run:
-```
-pip install doc-comments-ai
-```
-> [!IMPORTANT]  
-> The results by using a local LLM will highly be affected by your selected model. To get similar results compared to GPT-3.5/4 you need to select very large models which require a powerful hardware.
