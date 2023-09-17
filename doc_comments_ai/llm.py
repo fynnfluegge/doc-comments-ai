@@ -57,7 +57,7 @@ class LLM:
                 self.llm = AzureOpenAI(
                     temperature=0.9, max_tokens=max_tokens, model=model.value
                 )
-            elif remote_model == "sagemaker-endpoint":
+            elif remote_model == "aws-sagemaker":
                 content_handler = ContentHandler()
                 self.llm = SagemakerEndpoint(
                     client=None,
