@@ -26,6 +26,26 @@ def run():
         help="Path to the local model.",
     )
     parser.add_argument(
+        "--remote_model",
+        type=str,
+        help="Name of the remote model.",
+    )
+    parser.add_argument(
+        "--endpoint",
+        type=str,
+        help="Sagemaker endpoint.",
+    )
+    parser.add_argument(
+        "--region",
+        type=str,
+        help="AWS region.",
+    )
+    parser.add_argument(
+        "--credentials_profile_name",
+        type=str,
+        help="AWS profile.",
+    )
+    parser.add_argument(
         "--inline",
         action="store_true",
         help="Adds inline comments to the code if necessary.",
@@ -55,9 +75,11 @@ def run():
         sys.exit(f"File {utils.get_bold_text(file_name)} has unstaged changes")
 
     if args.gpt4:
-        llm_wrapper = llm.LLM(model=GptModel.GPT_4)
+        llm_wrapper = llm.LLM(args=args, model=GptModel.GPT_4)
     else:
-        llm_wrapper = llm.LLM(local_model=args.local_model)
+        llm_wrapper = llm.LLM(
+            args=args, local_model=args.local_model, remote_model=args.remote_model
+        )
 
     generated_doc_comments = {}
 
