@@ -34,17 +34,35 @@ class Treesitter(ABC):
         self.tree = self.parser.parse(file_bytes)
         pass
 
+    def parse_methods(self, methods: list[tuple[tree_sitter.Node, str]]):
+        result = []
+        methods.reverse()
+        while methods:
+            if methods and methods[-1][1] == "doc_comment":
+                doc_comment = methods.pop()
+                self.process_method(methods, doc_comment, result)
+            else:
+                self.process_method(methods, None, result)
+
+        return result
+
+    def process_method(self, methods, doc_comment, result):
+        if methods and methods[-1][1] == "method":
+            method = methods.pop()
+            if methods and methods[-1][1] == "method_name":
+                method_name = methods.pop()
+                result.append(
+                    TreesitterMethodNode(
+                        method_name[0].text.decode(),
+                        doc_comment[0].text.decode() if doc_comment else None,
+                        method[0],
+                    )
+                )
+
     @abstractmethod
     def _query_all_methods(self):
         """
         This function returns a treesitter query for method names
         based on the language
-        """
-        pass
-
-    @abstractmethod
-    def _query_method_name(self, node: tree_sitter.Node):
-        """
-        This function returns the name of a method node
         """
         pass

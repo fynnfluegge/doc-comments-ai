@@ -1,7 +1,8 @@
 import tree_sitter
 
 from doc_comments_ai.constants import Language
-from doc_comments_ai.treesitter.treesitter import Treesitter, TreesitterMethodNode
+from doc_comments_ai.treesitter.treesitter import (Treesitter,
+                                                   TreesitterMethodNode)
 from doc_comments_ai.treesitter.treesitter_registry import TreesitterRegistry
 
 
@@ -13,47 +14,29 @@ class TreesitterPython(Treesitter):
         super().parse(file_bytes)
         result = []
         methods = self._query_all_methods(self.tree.root_node)
-        for method in methods:
-            method_name = self._query_method_name(method)
-            doc_comment = self._query_doc_comment(method)
-            result.append(TreesitterMethodNode(method_name, doc_comment, method))
+        methods.reverse()
+        while methods:
+            if methods and methods[-1][1] == "method":
+                doc_comment = self._query_doc_comment(methods[-1][0])
+                if doc_comment:
+                    self.process_method(methods, doc_comment[0], result)
+                else:
+                    self.process_method(methods, None, result)
+
         return result
 
-    def _query_method_name(self, node: tree_sitter.Node):
-        if node.type == "function_definition":
-            for child in node.children:
-                if child.type == "identifier":
-                    return child.text.decode()
-        return None
-
     def _query_all_methods(self, node: tree_sitter.Node):
-        methods = []
-        for child in node.children:
-            if child.type == "function_definition":
-                methods.append(child)
-        return methods
+        query_code = """
+        (function_definition
+            name: (identifier) @method_name) @method
+        """
+        query = self.language.query(query_code)
+        return query.captures(node)
 
     def _query_doc_comment(self, node: tree_sitter.Node):
-        """
-        This function returns a treesitter query for doc comments
-        based on the language
-        """
-        query_code = """
-            (module . (comment)* . (expression_statement (string)) @module_doc_str)
-
-            (class_definition
-                body: (block . (expression_statement (string)) @class_doc_str))
-
-            (function_definition
-                body: (block . (expression_statement (string)) @function_doc_str))
-        """
-        doc_str_query = self.language.query(query_code)
-        doc_strs = doc_str_query.captures(node)
-
-        if doc_strs:
-            return doc_strs[0][0].text.decode()
-        else:
-            return None
+        query_code = "(block . (expression_statement (string)) @doc_str)"
+        query = self.language.query(query_code)
+        return query.captures(node)
 
 
 # Register the TreesitterPython class in the registry

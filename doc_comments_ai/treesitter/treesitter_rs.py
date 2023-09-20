@@ -1,7 +1,8 @@
 import tree_sitter
 
 from doc_comments_ai.constants import Language
-from doc_comments_ai.treesitter.treesitter import Treesitter, TreesitterMethodNode
+from doc_comments_ai.treesitter.treesitter import (Treesitter,
+                                                   TreesitterMethodNode)
 from doc_comments_ai.treesitter.treesitter_registry import TreesitterRegistry
 
 
