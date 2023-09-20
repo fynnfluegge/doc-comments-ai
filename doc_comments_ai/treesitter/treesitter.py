@@ -41,10 +41,3 @@ class Treesitter(ABC):
         based on the language
         """
         pass
-
-    @abstractmethod
-    def _query_method_name(self, node: tree_sitter.Node):
-        """
-        This function returns the name of a method node
-        """
-        pass

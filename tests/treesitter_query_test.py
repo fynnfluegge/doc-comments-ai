@@ -2,7 +2,8 @@ import pytest
 
 from doc_comments_ai import domain
 from doc_comments_ai.constants import Language
-from doc_comments_ai.treesitter.treesitter import Treesitter, TreesitterMethodNode
+from doc_comments_ai.treesitter.treesitter import (Treesitter,
+                                                   TreesitterMethodNode)
 
 
 @pytest.mark.usefixtures("python_code_fixture")
@@ -32,6 +33,28 @@ def test_python_qery(python_code_fixture):
     )
 
     assert treesitterNodes[1].doc_comment is None
+
+    assert (
+        treesitterNodes[0].method_source_code
+        == """\"\"\"
+    Returns the corresponding programming language based on the given file extension.
+
+    Args:
+        file_extension (str): The file extension of the programming file.
+
+    Returns:
+        Language: The corresponding programming language if it exists in the mapping, otherwise Language.UNKNOWN.
+    \"\"\"
+    language_mapping = {
+        ".py": Language.PYTHON,
+        ".js": Language.JAVASCRIPT,
+        ".ts": Language.TYPESCRIPT,
+        ".java": Language.JAVA,
+        ".kt": Language.KOTLIN,
+        ".lua": Language.LUA,
+    }
+    return language_mapping.get(file_extension, Language.UNKNOWN)"""
+    )
 
 
 @pytest.mark.usefixtures("java_code_fixture")
