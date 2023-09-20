@@ -1,7 +1,8 @@
 import tree_sitter
 
 from doc_comments_ai.constants import Language
-from doc_comments_ai.treesitter.treesitter import Treesitter, TreesitterMethodNode
+from doc_comments_ai.treesitter.treesitter import (Treesitter,
+                                                   TreesitterMethodNode)
 from doc_comments_ai.treesitter.treesitter_registry import TreesitterRegistry
 
 
@@ -13,15 +14,15 @@ class TreesitterPython(Treesitter):
         super().parse(file_bytes)
         result = []
         methods = self._query_all_methods(self.tree.root_node)
-        # methods is a list of tuples of the form (method_name, method_body)
-        for i in range(0, len(methods), 2):
-            method_body = methods[i][0]
-            method_name = methods[i + 1][0].text.decode()
-            doc_str_node = self._query_doc_comment(method_body)
-            doc_comment = None
-            if doc_str_node:
-                doc_comment = doc_str_node[0][0].text.decode()
-            result.append(TreesitterMethodNode(method_name, doc_comment, method_body))
+        methods.reverse()
+        while methods:
+            if methods and methods[-1][1] == "method":
+                doc_comment = self._query_doc_comment(methods[-1][0])
+                if doc_comment:
+                    self.process_method(methods, doc_comment[0], result)
+                else:
+                    self.process_method(methods, None, result)
+
         return result
 
     def _query_all_methods(self, node: tree_sitter.Node):

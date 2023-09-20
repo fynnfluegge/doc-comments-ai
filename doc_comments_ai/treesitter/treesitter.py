@@ -38,27 +38,26 @@ class Treesitter(ABC):
         result = []
         methods.reverse()
         while methods:
-
-            def process_method(doc_comment):
-                if methods[-1][1] == "method":
-                    method = methods.pop()
-                    if methods[-1][1] == "method_name":
-                        method_name = methods.pop()
-                        result.append(
-                            TreesitterMethodNode(
-                                method_name[0].text.decode(),
-                                doc_comment[0].text.decode() if doc_comment else None,
-                                method[0],
-                            )
-                        )
-
-            if methods[-1][1] == "block_comment":
+            if methods and methods[-1][1] == "doc_comment":
                 doc_comment = methods.pop()
-                process_method(doc_comment)
+                self.process_method(methods, doc_comment, result)
             else:
-                process_method(None)
+                self.process_method(methods, None, result)
 
         return result
+
+    def process_method(self, methods, doc_comment, result):
+        if methods and methods[-1][1] == "method":
+            method = methods.pop()
+            if methods and methods[-1][1] == "method_name":
+                method_name = methods.pop()
+                result.append(
+                    TreesitterMethodNode(
+                        method_name[0].text.decode(),
+                        doc_comment[0].text.decode() if doc_comment else None,
+                        method[0],
+                    )
+                )
 
     @abstractmethod
     def _query_all_methods(self):

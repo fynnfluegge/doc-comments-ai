@@ -17,7 +17,7 @@ class TreesitterJava(Treesitter):
 
     def _query_all_methods(self, node: tree_sitter.Node):
         query_code = """
-        (block_comment) @block_comment
+        (block_comment) @doc_comment
         (method_declaration
             name: (identifier) @method_name) @method
         """
