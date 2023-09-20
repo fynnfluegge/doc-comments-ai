@@ -1,12 +1,17 @@
+import json
 import os
 import subprocess
 import sys
+from argparse import Namespace
 from enum import Enum
+from typing import Dict
 
 import inquirer
 from langchain import LLMChain, PromptTemplate
+from langchain.chains.question_answering import load_qa_chain
 from langchain.chat_models import ChatOpenAI
-from langchain.llms import LlamaCpp
+from langchain.llms import AzureOpenAI, LlamaCpp, SagemakerEndpoint
+from langchain.llms.sagemaker_endpoint import LLMContentHandler
 
 from doc_comments_ai import utils
 
@@ -16,11 +21,26 @@ class GptModel(Enum):
     GPT_4 = "gpt-4"
 
 
+class ContentHandler(LLMContentHandler):
+    content_type = "application/json"
+    accepts = "application/json"
+
+    def transform_input(self, prompt: str, model_kwargs: Dict) -> bytes:
+        input_str = json.dumps({prompt: prompt, **model_kwargs})
+        return input_str.encode("utf-8")
+
+    def transform_output(self, output: bytes) -> str:
+        response_json = json.loads(output.decode("utf-8"))
+        return response_json[0]["generated_text"]
+
+
 class LLM:
     def __init__(
         self,
+        args: Namespace,
         model: GptModel = GptModel.GPT_35,
         local_model: str | None = None,
+        remote_model: str | None = None,
     ):
         max_tokens = 2048 if model == GptModel.GPT_35 else 4096
         if local_model is not None:
@@ -32,6 +52,23 @@ class LLM:
                 max_tokens=max_tokens,
                 verbose=False,
             )
+        elif remote_model is not None:
+            if remote_model == "azure-openai":
+                self.llm = AzureOpenAI(
+                    temperature=0.9, max_tokens=max_tokens, model=model.value
+                )
+            elif remote_model == "aws-sagemaker":
+                content_handler = ContentHandler()
+                self.llm = SagemakerEndpoint(
+                    client=None,
+                    endpoint_name=args.endpoint,
+                    credentials_profile_name=args.credentials_profile_name,
+                    region_name=args.region,
+                    model_kwargs={"temperature": 0.9},
+                    content_handler=content_handler,
+                )
+
+            pass
         else:
             self.llm = ChatOpenAI(
                 temperature=0.9, max_tokens=max_tokens, model=model.value
@@ -47,7 +84,11 @@ class LLM:
             template=self.template,
             input_variables=["language", "code", "inline_comments"],
         )
-        self.chain = LLMChain(llm=self.llm, prompt=self.prompt)
+        if remote_model is not None:
+            if remote_model == "sagemaker-endpoint":
+                self.chain = load_qa_chain(llm=self.llm, prompt=self.prompt)
+        else:
+            self.chain = LLMChain(llm=self.llm, prompt=self.prompt)
 
     def generate_doc_comment(self, language, code, inline=False):
         """
