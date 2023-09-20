@@ -36,7 +36,8 @@ def test_python_qery(python_code_fixture):
 
     assert (
         treesitterNodes[0].method_source_code
-        == """\"\"\"
+        == """def get_programming_language(file_extension: str) -> Language:
+    \"\"\"
     Returns the corresponding programming language based on the given file extension.
 
     Args:
@@ -81,6 +82,21 @@ def test_java_qery(java_code_fixture):
     )
 
     assert treesitterNodes[1].doc_comment is None
+
+    assert (
+        treesitterNodes[0].method_source_code
+        == """public static Language getProgrammingLanguage(String fileExtension) {
+        Map<String, Language> languageMapping = new HashMap<>();
+        languageMapping.put(".py", Language.PYTHON);
+        languageMapping.put(".js", Language.JAVASCRIPT);
+        languageMapping.put(".ts", Language.TYPESCRIPT);
+        languageMapping.put(".java", Language.JAVA);
+        languageMapping.put(".kt", Language.KOTLIN);
+        languageMapping.put(".lua", Language.LUA);
+
+        return languageMapping.getOrDefault(fileExtension, Language.UNKNOWN);
+    }"""
+    )
 
 
 @pytest.mark.usefixtures("javascript_code_fixture")

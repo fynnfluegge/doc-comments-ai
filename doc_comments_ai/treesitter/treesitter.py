@@ -34,6 +34,32 @@ class Treesitter(ABC):
         self.tree = self.parser.parse(file_bytes)
         pass
 
+    def parse_methods(self, methods: list[tuple[tree_sitter.Node, str]]):
+        result = []
+        methods.reverse()
+        while methods:
+
+            def process_method(doc_comment):
+                if methods[-1][1] == "method":
+                    method = methods.pop()
+                    if methods[-1][1] == "method_name":
+                        method_name = methods.pop()
+                        result.append(
+                            TreesitterMethodNode(
+                                method_name[0].text.decode(),
+                                doc_comment[0].text.decode() if doc_comment else None,
+                                method[0],
+                            )
+                        )
+
+            if methods[-1][1] == "block_comment":
+                doc_comment = methods.pop()
+                process_method(doc_comment)
+            else:
+                process_method(None)
+
+        return result
+
     @abstractmethod
     def _query_all_methods(self):
         """
