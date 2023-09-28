@@ -5,7 +5,7 @@ from enum import Enum
 
 import inquirer
 from langchain import LLMChain, PromptTemplate
-from langchain.chat_models import ChatOpenAI
+from langchain.chat_models import ChatLiteLLM
 from langchain.llms import LlamaCpp
 
 from doc_comments_ai import utils
@@ -33,7 +33,7 @@ class LLM:
                 verbose=False,
             )
         else:
-            self.llm = ChatOpenAI(
+            self.llm = ChatLiteLLM(
                 temperature=0.9, max_tokens=max_tokens, model=model.value
             )
         self.template = (
