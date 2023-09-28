@@ -1,9 +1,7 @@
 import pytest
 
-from doc_comments_ai import domain
 from doc_comments_ai.constants import Language
-from doc_comments_ai.treesitter.treesitter import (Treesitter,
-                                                   TreesitterMethodNode)
+from doc_comments_ai.treesitter.treesitter import Treesitter, TreesitterMethodNode
 
 
 @pytest.mark.usefixtures("python_code_fixture")

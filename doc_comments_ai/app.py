@@ -4,7 +4,7 @@ import sys
 
 from yaspin import yaspin
 
-from doc_comments_ai import domain, llm, utils
+from doc_comments_ai import llm, utils
 from doc_comments_ai.llm import GptModel
 from doc_comments_ai.treesitter import Treesitter, TreesitterMethodNode
 
