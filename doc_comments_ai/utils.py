@@ -136,6 +136,8 @@ def count_tokens(text):
     encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
     tokenized = encoding.encode(text)
     return len(tokenized)
+
+
 def is_openai_api_key_available():
     """
     Checks if the OpenAI API key is available in the environment variables.
@@ -148,14 +150,14 @@ def is_openai_api_key_available():
         sys.exit("OPENAI_API_KEY not found.")
 def is_azure_openai_environment_available():
     """
-    Checks if the required environment variables for Azure OpenAI deployment are set.
+    This method checks if the Azure OpenAI environment is available by verifying the presence 
+    of necessary environment variables: 'AZURE_API_BASE', 'AZURE_API_KEY' and 'AZURE_API_VERSION'. 
 
-    Returns:
-        None
+    The method retrieves these environment variables and checks if they are set. If any 
+    of these variables is not set, the method will print a message indicating which variable is missing 
+    and then terminate the program, instructing the user to set the missing environment variables.
 
-    Raises:
-        SystemExit: If any of the required environment variables are not set.
-
+    :raises SystemExit: If any of the required Azure OpenAI environment variables are not set.
     """
     azure_api_base = os.environ.get("AZURE_API_BASE")
     azure_api_key = os.environ.get("AZURE_API_KEY")
