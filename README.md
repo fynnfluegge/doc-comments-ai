@@ -103,7 +103,7 @@ pipx install doc-comments-ai
 
 > It is recommended to use `pipx` for installation, nonetheless it is also possible to use `pip`.
 
-### OpenAI API usage
+### 1. OpenAI usage
 
 Create your personal OpenAI API key and add it as `$OPENAI_API_KEY` to your environment with:
 
@@ -111,7 +111,7 @@ Create your personal OpenAI API key and add it as `$OPENAI_API_KEY` to your envi
 export OPENAI_API_KEY=<YOUR_API_KEY>
 ```
 
-### Azure OpenAI usage
+### 2. Azure OpenAI usage
 
 Add the following variables to your environment:
 
@@ -121,7 +121,7 @@ export AZURE_API_KEY = <YOUR_AZURE_OPENAI_API_KEY>
 export AZURE_API_VERSION = "2023-05-15"
 ```
 
-### 2. Local LLM usage
+### 3. Local LLM usage
 
 By using a local LLM no API key is required. On first usage of `--local_model` you will be asked for confirmation to intall `llama-cpp-python` with its dependencies.
 The installation process will take care of the hardware-accelerated build tailored to your hardware and OS. For further details see:
