@@ -10,14 +10,6 @@ from doc_comments_ai.treesitter import Treesitter, TreesitterMethodNode
 
 
 def run():
-    """
-    This is the entry point of the application
-    """
-    api_key = os.environ.get("OPENAI_API_KEY")
-
-    if not api_key:
-        sys.exit("OPENAI_API_KEY not found.")
-
     parser = argparse.ArgumentParser()
     parser.add_argument("dir", nargs="?", default=os.getcwd())
     parser.add_argument(
@@ -60,11 +52,14 @@ def run():
         sys.exit(f"File {utils.get_bold_text(file_name)} has unstaged changes")
 
     if args.azure_deployment:
+        utils.is_azure_openai_environment_available()
         llm_wrapper = llm.LLM(azure_deployment=args.azure_deployment)
 
     if args.gpt4:
+        utils.is_openai_api_key_available()
         llm_wrapper = llm.LLM(model=GptModel.GPT_4)
     else:
+        utils.is_openai_api_key_available()
         llm_wrapper = llm.LLM(local_model=args.local_model)
 
     generated_doc_comments = {}

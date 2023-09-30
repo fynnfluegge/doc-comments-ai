@@ -22,18 +22,19 @@ Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](ht
 
 ## ✨ Features
 
-- 📝 Create documentation comment blocks for all methods in a file
+- 📝 Generate documentation comment blocks for all methods in a file
   - e.g. Javadoc, JSDoc, Docstring, Rustdoc etc.
-- ✍️ Create inline documentation comments in method bodies
+- ✍️ Generate inline documentation comments in method bodies
 - 🌳 Treesitter integration
 - 💻 Local LLM support
+- 🌐 Azure OpenAI support
 
 > [!NOTE]  
 > Documentations will only be added to files without unstaged changes, so nothing is overwritten.
 
 ## 🚀 Usage
 
-Create documentations for any method in the file with GPT-3.5 Turbo model:
+Create documentations for any method in a file specified by `<RELATIVE_FILE_PATH>` with GPT-3.5-Turbo model:
 
 ```
 aicomments <RELATIVE_FILE_PATH>
@@ -51,10 +52,10 @@ Use GPT-4 model (Default is GPT-3.5):
 aicomments <RELATIVE_FILE_PATH> --gpt4
 ```
 
-Guided mode, confirm documentation generation for each method:
+Use Azure OpenAI:
 
 ```
-aicomments <RELATIVE_FILE_PATH> --guided
+aicomments <RELATIVE_FILE_PATH> --azure-deployment <DEPLOYMENT_NAME>
 ```
 
 Use a local LLM on your machine:
@@ -63,9 +64,15 @@ Use a local LLM on your machine:
 aicomments <RELATIVE_FILE_PATH> --local_model <MODEL_PATH>
 ```
 
+Guided mode, confirm documentation generation for each method:
+
+```
+aicomments <RELATIVE_FILE_PATH> --guided
+```
+
 > [!NOTE]  
 > How to download models from huggingface for local usage see [Local LLM usage](README.md#2-local-llm-usage)
- 
+
 > [!IMPORTANT]  
 > The results by using a local LLM will highly be affected by your selected model. To get similar results compared to GPT-3.5/4 you need to select very large models which require a powerful hardware.
 
@@ -88,14 +95,6 @@ aicomments <RELATIVE_FILE_PATH> --local_model <MODEL_PATH>
 
 ## 🔧 Installation
 
-### 1. OpenAI API usage
-
-Create your personal OpenAI API key and add it as `$OPENAI_API_KEY` to your environment with:
-
-```
-export OPENAI_API_KEY=<YOUR_API_KEY>
-```
-
 Install with `pipx`:
 
 ```
@@ -104,6 +103,24 @@ pipx install doc-comments-ai
 
 > It is recommended to use `pipx` for installation, nonetheless it is also possible to use `pip`.
 
+### OpenAI API usage
+
+Create your personal OpenAI API key and add it as `$OPENAI_API_KEY` to your environment with:
+
+```bash
+export OPENAI_API_KEY=<YOUR_API_KEY>
+```
+
+### Azure OpenAI usage
+
+Add the following variables to your environment:
+
+```bash
+export AZURE_API_BASE = "https://<your-endpoint.openai.azure.com/"
+export AZURE_API_KEY = <YOUR_AZURE_OPENAI_API_KEY>
+export AZURE_API_VERSION = "2023-05-15"
+```
+
 ### 2. Local LLM usage
 
 By using a local LLM no API key is required. On first usage of `--local_model` you will be asked for confirmation to intall `llama-cpp-python` with its dependencies.
@@ -111,9 +128,11 @@ The installation process will take care of the hardware-accelerated build tailor
 [installation-with-hardware-acceleration](https://github.com/abetlen/llama-cpp-python#installation-with-hardware-acceleration)
 
 To download a model from huggingface for local usage the most convenient way is using the `huggingface-cli`:
+
 ```
 huggingface-cli download TheBloke/CodeLlama-13B-Python-GGUF codellama-13b-python.Q5_K_M.gguf
 ```
+
 This will download the `codellama-13b-python.Q5_K_M` model to `~/.cache/huggingface/`.
 After the download has finished the absolute path of the `.gguf` file is printed to the console which can be used as the value for `--local_model`.
 
