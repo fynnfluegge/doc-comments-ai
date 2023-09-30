@@ -40,6 +40,11 @@ def run():
         action="store_true",
         help="User will get asked to confirm the doc generation for each method.",
     )
+    parser.add_argument(
+        "--azure-deployment",
+        type=str,
+        help="Azure OpenAI deployment name.",
+    )
 
     if sys.argv.__len__() < 2:
         sys.exit("Please provide a file")
@@ -53,6 +58,9 @@ def run():
 
     if utils.has_unstaged_changes(file_name):
         sys.exit(f"File {utils.get_bold_text(file_name)} has unstaged changes")
+
+    if args.azure_deployment:
+        llm_wrapper = llm.LLM(azure_deployment=args.azure_deployment)
 
     if args.gpt4:
         llm_wrapper = llm.LLM(model=GptModel.GPT_4)
