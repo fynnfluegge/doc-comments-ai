@@ -75,7 +75,7 @@ aicomments <RELATIVE_FILE_PATH> --guided
 ```
 
 > [!NOTE]  
-> How to download models from huggingface for local usage see [Local LLM usage](README.md#3-local-llm-usage)
+> How to download models from huggingface for local usage see [Local LLM usage](https://github.com/fynnfluegge/doc-comments-ai#3-local-llm-usage)
 
 > [!IMPORTANT]  
 > The results by using a local LLM will highly be affected by your selected model. To get similar results compared to GPT-3.5/4 you need to select very large models which require a powerful hardware.
