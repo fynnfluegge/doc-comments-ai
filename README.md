@@ -22,12 +22,12 @@ Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](ht
 
 ## ✨ Features
 
-- 📝 Generate documentation comment blocks for all methods in a file
+- 📝 &nbsp;Generate documentation comment blocks for all methods in a file
   - e.g. Javadoc, JSDoc, Docstring, Rustdoc etc.
-- ✍️ Generate inline documentation comments in method bodies
-- 🌳 Treesitter integration
-- 💻 Local LLM support
-- 🌐 Azure OpenAI support
+- ✍️ &nbsp; Generate inline documentation comments in method bodies
+- 🌳&nbsp; Treesitter integration
+- 💻&nbsp; Local LLM support
+- 🌐&nbsp; Azure OpenAI support
 
 > [!NOTE]  
 > Documentations will only be added to files without unstaged changes, so nothing is overwritten.
