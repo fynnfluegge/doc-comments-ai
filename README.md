@@ -16,7 +16,11 @@ With just a few keystrokes in your terminal by using the OpenAI API or 100% loca
 
 Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](https://github.com/ggerganov/llama.cpp) and [treesitter](https://github.com/tree-sitter/tree-sitter).
 
+<kbd>
+  
 ![ezgif-4-53d6e634af](https://github.com/fynnfluegge/doc-comments.ai/assets/16321871/8f2756cb-36f9-43c6-94b1-658b89b49786)
+
+</kbd>
 
 </div>
 
