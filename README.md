@@ -112,7 +112,7 @@ pipx install doc-comments-ai
 Create your personal OpenAI API key and add it as `$OPENAI_API_KEY` to your environment with:
 
 ```bash
-export OPENAI_API_KEY=<YOUR_API_KEY>
+export OPENAI_API_KEY = <YOUR_API_KEY>
 ```
 
 ### 2. Azure OpenAI usage
