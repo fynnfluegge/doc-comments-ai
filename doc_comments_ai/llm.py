@@ -21,6 +21,7 @@ class LLM:
         self,
         model: GptModel = GptModel.GPT_35,
         local_model: str | None = None,
+        azure_deployment: str | None = None,
     ):
         max_tokens = 2048 if model == GptModel.GPT_35 else 4096
         if local_model is not None:
@@ -28,13 +29,19 @@ class LLM:
 
             self.llm = LlamaCpp(
                 model_path=local_model,
-                temperature=0.9,
+                temperature=0.8,
                 max_tokens=max_tokens,
                 verbose=False,
             )
+        elif azure_deployment is not None:
+            self.llm = ChatLiteLLM(
+                temperature=0.8,
+                max_tokens=max_tokens,
+                model=f"azure/{azure_deployment}",
+            )
         else:
             self.llm = ChatLiteLLM(
-                temperature=0.9, max_tokens=max_tokens, model=model.value
+                temperature=0.8, max_tokens=max_tokens, model=model.value
             )
         self.template = (
             "Add a detailed doc comment to the following {language} method:\n{code}\n"
