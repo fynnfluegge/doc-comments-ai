@@ -148,13 +148,15 @@ def is_openai_api_key_available():
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
         sys.exit("OPENAI_API_KEY not found.")
+
+
 def is_azure_openai_environment_available():
     """
-    This method checks if the Azure OpenAI environment is available by verifying the presence 
-    of necessary environment variables: 'AZURE_API_BASE', 'AZURE_API_KEY' and 'AZURE_API_VERSION'. 
+    This method checks if the Azure OpenAI environment is available by verifying the presence
+    of necessary environment variables: 'AZURE_API_BASE', 'AZURE_API_KEY' and 'AZURE_API_VERSION'.
 
-    The method retrieves these environment variables and checks if they are set. If any 
-    of these variables is not set, the method will print a message indicating which variable is missing 
+    The method retrieves these environment variables and checks if they are set. If any
+    of these variables is not set, the method will print a message indicating which variable is missing
     and then terminate the program, instructing the user to set the missing environment variables.
 
     :raises SystemExit: If any of the required Azure OpenAI environment variables are not set.
