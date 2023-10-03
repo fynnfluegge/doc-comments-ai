@@ -1,5 +1,3 @@
-import tree_sitter
-
 from doc_comments_ai.constants import Language
 from doc_comments_ai.treesitter.treesitter import (Treesitter,
                                                    TreesitterMethodNode)

@@ -324,3 +324,61 @@ def test_go_qery(go_code_fixture):
 	return UNKNOWN
 }"""
     )
+
+
+@pytest.mark.usefixtures("c_code_fixture")
+def test_c_qery(c_code_fixture):
+    tree_sitter = Treesitter.create_treesitter(Language.C)
+    treesitterNodes: list[TreesitterMethodNode] = tree_sitter.parse(
+        c_code_fixture.encode()
+    )
+
+    assert treesitterNodes.__len__() == 2
+
+    assert treesitterNodes[0].name == "getProgrammingLanguage"
+
+    assert treesitterNodes[1].name == "getFileExtension"
+
+    assert (
+        treesitterNodes[0].doc_comment
+        == """/**
+ * Get the corresponding programming language based on the given file extension.
+ *
+ * @param fileExtension The file extension of the programming file.
+ * @return The corresponding programming language if it exists in the mapping, otherwise Language.UNKNOWN.
+ */"""
+    )
+    print(treesitterNodes[1].doc_comment)
+
+    assert treesitterNodes[1].doc_comment is None
+
+    assert (
+        treesitterNodes[0].method_source_code
+        == """enum Language getProgrammingLanguage(const char *fileExtension) {
+    // Define a mapping of file extensions to programming languages.
+    struct LanguageMapping {
+        const char *extension;
+        enum Language language;
+    };
+    
+    struct LanguageMapping languageMapping[] = {
+        {".py", PYTHON},
+        {".js", JAVASCRIPT},
+        {".ts", TYPESCRIPT},
+        {".java", JAVA},
+        {".kt", KOTLIN},
+        {".lua", LUA},
+    };
+    
+    int numMappings = sizeof(languageMapping) / sizeof(languageMapping[0]);
+    
+    // Iterate through the mappings and check if the file extension matches.
+    for (int i = 0; i < numMappings; i++) {
+        if (strcmp(fileExtension, languageMapping[i].extension) == 0) {
+            return languageMapping[i].language;
+        }
+    }
+    
+    return UNKNOWN;
+}"""
+    )
