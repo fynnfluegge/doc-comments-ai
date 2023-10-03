@@ -10,18 +10,6 @@ class TreesitterRust(Treesitter):
     def __init__(self):
         super().__init__(Language.RUST, "function_item", "identifier", "line_comment")
 
-    def parse(self, file_bytes: bytes) -> list[TreesitterMethodNode]:
-        super().parse(file_bytes)
-        result = []
-        methods = self._query_all_methods(self.tree.root_node)
-        for method in methods:
-            method_name = self._query_method_name(method["method"])
-            doc_comment = method["doc_comment"]
-            result.append(
-                TreesitterMethodNode(method_name, doc_comment, method["method"])
-            )
-        return result
-
     def _query_method_name(self, node: tree_sitter.Node):
         if node.type == self.method_declaration_identifier:
             for child in node.children:

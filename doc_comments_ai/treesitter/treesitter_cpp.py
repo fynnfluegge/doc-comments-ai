@@ -13,7 +13,6 @@ class TreesitterCpp(Treesitter):
     def parse(self, file_bytes: bytes) -> list[TreesitterMethodNode]:
         super().parse(file_bytes)
         result = []
-        print(self.tree.root_node.sexp())
         methods = self._query_all_methods(self.tree.root_node)
         for method in methods:
             method_name = self._query_method_name(method["method"])
