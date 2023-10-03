@@ -427,3 +427,45 @@ def test_cpp_query(cpp_code_fixture):
     return Language::UNKNOWN;
 }"""
     )
+
+
+@pytest.mark.usefixtures("csharp_code_fixture")
+def test_csharp_query(csharp_code_fixture):
+    tree_sitter = Treesitter.create_treesitter(Language.C_SHARP)
+    treesitterNodes: list[TreesitterMethodNode] = tree_sitter.parse(
+        csharp_code_fixture.encode()
+    )
+
+    assert treesitterNodes.__len__() == 2
+
+    assert treesitterNodes[0].name == "GetProgrammingLanguage"
+
+    assert treesitterNodes[1].name == "GetFileExtension"
+
+    assert (
+        treesitterNodes[0].doc_comment
+        == """/// <summary>
+/// Gets the corresponding programming language based on the given file extension.
+/// </summary>
+/// <param name="fileExtension">The file extension of the programming file.</param>
+/// <returns>The corresponding programming language if it exists in the mapping, otherwise Language.UNKNOWN.</returns>"""
+    )
+
+    assert treesitterNodes[1].doc_comment is None
+
+    assert (
+        treesitterNodes[0].method_source_code
+        == """public static Language GetProgrammingLanguage(string fileExtension)
+    {
+        Dictionary<string, Language> languageMapping = new Dictionary<string, Language>();
+        languageMapping[".py"] = Language.PYTHON;
+        languageMapping[".js"] = Language.JAVASCRIPT;
+        languageMapping[".ts"] = Language.TYPESCRIPT;
+        languageMapping[".java"] = Language.JAVA;
+        languageMapping[".kt"] = Language.KOTLIN;
+        languageMapping[".lua"] = Language.LUA;
+
+        // Return the corresponding language if it exists in the mapping, otherwise return Language.UNKNOWN 
+        return languageMapping.TryGetValue(fileExtension, out var language) ? language : Language.UNKNOWN;
+    }"""
+    )

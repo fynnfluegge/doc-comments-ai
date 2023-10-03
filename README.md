@@ -91,7 +91,7 @@ aicomments <RELATIVE_FILE_PATH> --guided
 - [x] Go
 - [x] C++
 - [x] C
-- [ ] Scala
+- [x] C#
 
 ## 📋 Requirements
 
