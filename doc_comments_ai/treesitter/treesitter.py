@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 
 import tree_sitter
 from tree_sitter_languages import get_language, get_parser
@@ -38,10 +38,17 @@ class Treesitter(ABC):
     def create_treesitter(language: Language) -> "Treesitter":
         return TreesitterRegistry.create_treesitter(language)
 
-    @abstractmethod
     def parse(self, file_bytes: bytes) -> list[TreesitterMethodNode]:
         self.tree = self.parser.parse(file_bytes)
-        pass
+        result = []
+        methods = self._query_all_methods(self.tree.root_node)
+        for method in methods:
+            method_name = self._query_method_name(method["method"])
+            doc_comment = method["doc_comment"]
+            result.append(
+                TreesitterMethodNode(method_name, doc_comment, method["method"])
+            )
+        return result
 
     def _query_all_methods(
         self,

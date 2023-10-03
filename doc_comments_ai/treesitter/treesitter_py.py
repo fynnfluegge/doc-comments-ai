@@ -13,7 +13,7 @@ class TreesitterPython(Treesitter):
         )
 
     def parse(self, file_bytes: bytes) -> list[TreesitterMethodNode]:
-        super().parse(file_bytes)
+        self.tree = self.parser.parse(file_bytes)
         result = []
         methods = self._query_all_methods(self.tree.root_node)
         for method in methods:
