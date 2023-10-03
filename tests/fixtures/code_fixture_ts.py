@@ -20,6 +20,7 @@ function getProgrammingLanguage(fileExtension: string): Language {
         ".lua": Language.LUA,
     };
 
+    // Return the corresponding language if it exists in the mapping, otherwise return Language.UNKNOWN
     return languageMapping[fileExtension] || Language.UNKNOWN;
 }
 

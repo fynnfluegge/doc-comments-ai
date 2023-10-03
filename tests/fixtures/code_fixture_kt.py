@@ -19,6 +19,7 @@ fun getProgrammingLanguage(fileExtension: String): Language {
     languageMapping[".kt"] = Language.KOTLIN
     languageMapping[".lua"] = Language.LUA
 
+    // Return the corresponding language if it exists in the mapping, otherwise return Language.UNKNOWN
     return languageMapping.getOrDefault(fileExtension, Language.UNKNOWN)
 }
 

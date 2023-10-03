@@ -34,6 +34,7 @@ fn get_programming_language(file_extension: &str) -> Language {
     .cloned()
     .collect();
 
+    // Return the corresponding language if it exists in the mapping, otherwise return Language::UNKNOWN
     *language_mapping.get(file_extension).unwrap_or(&Language::UNKNOWN)
 }
 

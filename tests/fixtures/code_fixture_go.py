@@ -19,6 +19,7 @@ func getProgrammingLanguage(fileExtension string) Language {
 	if exists {
 		return language
 	}
+	// TODO: Add more languages
 	return UNKNOWN
 }
 

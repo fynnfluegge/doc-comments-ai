@@ -8,7 +8,7 @@ from doc_comments_ai.treesitter.treesitter_registry import TreesitterRegistry
 
 class TreesitterRust(Treesitter):
     def __init__(self):
-        super().__init__(Language.RUST)
+        super().__init__(Language.RUST, "function_item", "identifier", "line_comment")
 
     def parse(self, file_bytes: bytes) -> list[TreesitterMethodNode]:
         super().parse(file_bytes)
@@ -23,24 +23,24 @@ class TreesitterRust(Treesitter):
         return result
 
     def _query_method_name(self, node: tree_sitter.Node):
-        if node.type == "function_item":
+        if node.type == self.method_declaration_identifier:
             for child in node.children:
-                if child.type == "identifier":
+                if child.type == self.method_name_identifier:
                     return child.text.decode()
         return None
 
     def _query_all_methods(self, node: tree_sitter.Node):
         methods = []
-        if node.type == "function_item":
+        if node.type == self.method_declaration_identifier:
             doc_comment_nodes = []
             if (
                 node.prev_named_sibling
-                and node.prev_named_sibling.type == "line_comment"
+                and node.prev_named_sibling.type == self.doc_comment_identifier
             ):
                 current_doc_comment_node = node.prev_named_sibling
                 while (
                     current_doc_comment_node
-                    and current_doc_comment_node.type == "line_comment"
+                    and current_doc_comment_node.type == self.doc_comment_identifier
                 ):
                     doc_comment_nodes.append(current_doc_comment_node.text.decode())
                     if current_doc_comment_node.prev_named_sibling:

@@ -1,7 +1,8 @@
 import pytest
 
 from doc_comments_ai.constants import Language
-from doc_comments_ai.treesitter.treesitter import Treesitter, TreesitterMethodNode
+from doc_comments_ai.treesitter.treesitter import (Treesitter,
+                                                   TreesitterMethodNode)
 
 
 @pytest.mark.usefixtures("python_code_fixture")
@@ -92,6 +93,7 @@ def test_java_qery(java_code_fixture):
         languageMapping.put(".kt", Language.KOTLIN);
         languageMapping.put(".lua", Language.LUA);
 
+        // Return the corresponding language if it exists in the mapping, otherwise return Language.UNKNOWN 
         return languageMapping.getOrDefault(fileExtension, Language.UNKNOWN);
     }"""
     )
@@ -134,6 +136,7 @@ def test_javascript_qery(javascript_code_fixture):
         ".lua": Language.LUA,
     };
 
+    // Return the corresponding language if it exists in the mapping, otherwise return 'Unknown'
     return languageMapping[fileExtension] || Language.UNKNOWN;
 }"""
     )
@@ -176,6 +179,7 @@ def test_typescript_qery(typescript_code_fixture):
         ".lua": Language.LUA,
     };
 
+    // Return the corresponding language if it exists in the mapping, otherwise return Language.UNKNOWN
     return languageMapping[fileExtension] || Language.UNKNOWN;
 }"""
     )
@@ -232,6 +236,7 @@ def test_rust_qery(rust_code_fixture):
     .cloned()
     .collect();
 
+    // Return the corresponding language if it exists in the mapping, otherwise return Language::UNKNOWN
     *language_mapping.get(file_extension).unwrap_or(&Language::UNKNOWN)
 }"""
     )
@@ -273,6 +278,7 @@ def test_kotlin_qery(kotlin_code_fixture):
     languageMapping[".kt"] = Language.KOTLIN
     languageMapping[".lua"] = Language.LUA
 
+    // Return the corresponding language if it exists in the mapping, otherwise return Language.UNKNOWN
     return languageMapping.getOrDefault(fileExtension, Language.UNKNOWN)
 }"""
     )
@@ -314,6 +320,7 @@ def test_go_qery(go_code_fixture):
 	if exists {
 		return language
 	}
+	// TODO: Add more languages
 	return UNKNOWN
 }"""
     )

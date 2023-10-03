@@ -8,21 +8,21 @@ from doc_comments_ai.treesitter.treesitter_registry import TreesitterRegistry
 
 class TreesitterJava(Treesitter):
     def __init__(self):
-        super().__init__(Language.JAVA)
+        super().__init__(
+            Language.JAVA, "method_declaration", "identifier", "block_comment"
+        )
 
     def parse(self, file_bytes: bytes) -> list[TreesitterMethodNode]:
         super().parse(file_bytes)
+        result = []
         methods = self._query_all_methods(self.tree.root_node)
-        return self.parse_methods(methods)
-
-    def _query_all_methods(self, node: tree_sitter.Node):
-        query_code = """
-        (block_comment) @doc_comment
-        (method_declaration
-            name: (identifier) @method_name) @method
-        """
-        query = self.language.query(query_code)
-        return query.captures(node)
+        for method in methods:
+            method_name = self._query_method_name(method["method"])
+            doc_comment = method["doc_comment"]
+            result.append(
+                TreesitterMethodNode(method_name, doc_comment, method["method"])
+            )
+        return result
 
 
 # Register the TreesitterJava class in the registry
