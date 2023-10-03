@@ -80,7 +80,7 @@ aicomments <RELATIVE_FILE_PATH> --guided
 > [!IMPORTANT]  
 > The results by using a local LLM will highly be affected by your selected model. To get similar results compared to GPT-3.5/4 you need to select very large models which require a powerful hardware.
 
-## ⚙️ Supported Languages
+## 📚 Supported Languages
 
 - [x] Python
 - [x] Typescript
@@ -89,8 +89,8 @@ aicomments <RELATIVE_FILE_PATH> --guided
 - [x] Rust
 - [x] Kotlin
 - [x] Go
-- [ ] C++
-- [ ] C
+- [x] C++
+- [x] C
 - [ ] Scala
 
 ## 📋 Requirements

@@ -1,6 +1,7 @@
 import pytest
 
 from tests.fixtures.code_fixture_c import c_code_fixture
+from tests.fixtures.code_fixture_cpp import cpp_code_fixture
 from tests.fixtures.code_fixture_go import go_code_fixture
 from tests.fixtures.code_fixture_java import java_code_fixture
 from tests.fixtures.code_fixture_js import javascript_code_fixture

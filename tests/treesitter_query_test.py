@@ -6,7 +6,7 @@ from doc_comments_ai.treesitter.treesitter import (Treesitter,
 
 
 @pytest.mark.usefixtures("python_code_fixture")
-def test_python_qery(python_code_fixture):
+def test_python_query(python_code_fixture):
     treesitter = Treesitter.create_treesitter(Language.PYTHON)
     treesitterNodes: list[TreesitterMethodNode] = treesitter.parse(
         python_code_fixture.encode()
@@ -58,7 +58,7 @@ def test_python_qery(python_code_fixture):
 
 
 @pytest.mark.usefixtures("java_code_fixture")
-def test_java_qery(java_code_fixture):
+def test_java_query(java_code_fixture):
     treesitter = Treesitter.create_treesitter(Language.JAVA)
     treesitterNodes: list[TreesitterMethodNode] = treesitter.parse(
         java_code_fixture.encode()
@@ -100,7 +100,7 @@ def test_java_qery(java_code_fixture):
 
 
 @pytest.mark.usefixtures("javascript_code_fixture")
-def test_javascript_qery(javascript_code_fixture):
+def test_javascript_query(javascript_code_fixture):
     treesitter = Treesitter.create_treesitter(Language.JAVASCRIPT)
     treesitterNodes: list[TreesitterMethodNode] = treesitter.parse(
         javascript_code_fixture.encode()
@@ -143,7 +143,7 @@ def test_javascript_qery(javascript_code_fixture):
 
 
 @pytest.mark.usefixtures("typescript_code_fixture")
-def test_typescript_qery(typescript_code_fixture):
+def test_typescript_query(typescript_code_fixture):
     treesitter = Treesitter.create_treesitter(Language.TYPESCRIPT)
     treesitterNodes: list[TreesitterMethodNode] = treesitter.parse(
         typescript_code_fixture.encode()
@@ -186,7 +186,7 @@ def test_typescript_qery(typescript_code_fixture):
 
 
 @pytest.mark.usefixtures("rust_code_fixture")
-def test_rust_qery(rust_code_fixture):
+def test_rust_query(rust_code_fixture):
     treesitter = Treesitter.create_treesitter(Language.RUST)
     treesitterNodes: list[TreesitterMethodNode] = treesitter.parse(
         rust_code_fixture.encode()
@@ -243,7 +243,7 @@ def test_rust_qery(rust_code_fixture):
 
 
 @pytest.mark.usefixtures("kotlin_code_fixture")
-def test_kotlin_qery(kotlin_code_fixture):
+def test_kotlin_query(kotlin_code_fixture):
     tree_sitter = Treesitter.create_treesitter(Language.KOTLIN)
     treesitterNodes: list[TreesitterMethodNode] = tree_sitter.parse(
         kotlin_code_fixture.encode()
@@ -285,7 +285,7 @@ def test_kotlin_qery(kotlin_code_fixture):
 
 
 @pytest.mark.usefixtures("go_code_fixture")
-def test_go_qery(go_code_fixture):
+def test_go_query(go_code_fixture):
     tree_sitter = Treesitter.create_treesitter(Language.GO)
     treesitterNodes: list[TreesitterMethodNode] = tree_sitter.parse(
         go_code_fixture.encode()
@@ -327,7 +327,7 @@ def test_go_qery(go_code_fixture):
 
 
 @pytest.mark.usefixtures("c_code_fixture")
-def test_c_qery(c_code_fixture):
+def test_c_query(c_code_fixture):
     tree_sitter = Treesitter.create_treesitter(Language.C)
     treesitterNodes: list[TreesitterMethodNode] = tree_sitter.parse(
         c_code_fixture.encode()
@@ -348,7 +348,6 @@ def test_c_qery(c_code_fixture):
  * @return The corresponding programming language if it exists in the mapping, otherwise Language.UNKNOWN.
  */"""
     )
-    print(treesitterNodes[1].doc_comment)
 
     assert treesitterNodes[1].doc_comment is None
 
@@ -380,5 +379,51 @@ def test_c_qery(c_code_fixture):
     }
     
     return UNKNOWN;
+}"""
+    )
+
+
+@pytest.mark.usefixtures("cpp_code_fixture")
+def test_cpp_query(cpp_code_fixture):
+    tree_sitter = Treesitter.create_treesitter(Language.CPP)
+    treesitterNodes: list[TreesitterMethodNode] = tree_sitter.parse(
+        cpp_code_fixture.encode()
+    )
+
+    assert treesitterNodes.__len__() == 2
+
+    assert treesitterNodes[0].name == "getProgrammingLanguage"
+
+    assert treesitterNodes[1].name == "getFileExtension"
+
+    assert (
+        treesitterNodes[0].doc_comment
+        == """/**
+ * A function to get the corresponding programming language based on the given file extension.
+ *
+ * @param fileExtension The file extension of the programming file.
+ * @return The corresponding programming language if it exists in the mapping, otherwise Language::UNKNOWN.
+ */"""
+    )
+
+    assert treesitterNodes[1].doc_comment is None
+
+    assert (
+        treesitterNodes[0].method_source_code
+        == """Language getProgrammingLanguage(const std::string& fileExtension) {
+    std::unordered_map<std::string, Language> languageMapping;
+    languageMapping[".py"] = Language::PYTHON;
+    languageMapping[".js"] = Language::JAVASCRIPT;
+    languageMapping[".ts"] = Language::TYPESCRIPT;
+    languageMapping[".java"] = Language::JAVA;
+    languageMapping[".kt"] = Language::KOTLIN;
+    languageMapping[".lua"] = Language::LUA;
+
+    // Return the corresponding language if it exists in the mapping, otherwise return Language::UNKNOWN
+    auto it = languageMapping.find(fileExtension);
+    if (it != languageMapping.end()) {
+        return it->second;
+    }
+    return Language::UNKNOWN;
 }"""
     )
