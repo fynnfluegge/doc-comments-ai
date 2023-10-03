@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 
 import tree_sitter
 from tree_sitter_languages import get_language, get_parser
