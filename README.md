@@ -41,37 +41,37 @@ Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](ht
 Create documentations for any method in a file specified by `<RELATIVE_FILE_PATH>` with GPT-3.5-Turbo model:
 
 ```
-aicomments <RELATIVE_FILE_PATH>
+aicomment <RELATIVE_FILE_PATH>
 ```
 
 Create also documentation comments in the method body:
 
 ```
-aicomments <RELATIVE_FILE_PATH> --inline
+aicomment <RELATIVE_FILE_PATH> --inline
 ```
 
 Use GPT-4 model (Default is GPT-3.5):
 
 ```
-aicomments <RELATIVE_FILE_PATH> --gpt4
+aicomment <RELATIVE_FILE_PATH> --gpt4
 ```
 
 Use Azure OpenAI:
 
 ```
-aicomments <RELATIVE_FILE_PATH> --azure-deployment <DEPLOYMENT_NAME>
+aicomment <RELATIVE_FILE_PATH> --azure-deployment <DEPLOYMENT_NAME>
 ```
 
 Use a local LLM on your machine:
 
 ```
-aicomments <RELATIVE_FILE_PATH> --local_model <MODEL_PATH>
+aicomment <RELATIVE_FILE_PATH> --local_model <MODEL_PATH>
 ```
 
 Guided mode, confirm documentation generation for each method:
 
 ```
-aicomments <RELATIVE_FILE_PATH> --guided
+aicomment <RELATIVE_FILE_PATH> --guided
 ```
 
 > [!NOTE]  
