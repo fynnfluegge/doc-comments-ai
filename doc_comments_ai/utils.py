@@ -22,12 +22,18 @@ def get_programming_language(file_extension: str) -> Language:
     language_mapping = {
         ".py": Language.PYTHON,
         ".js": Language.JAVASCRIPT,
+        ".jsx": Language.JAVASCRIPT,
+        ".mjs": Language.JAVASCRIPT,
+        ".cjs": Language.JAVASCRIPT,
         ".ts": Language.TYPESCRIPT,
+        ".tsx": Language.TYPESCRIPT,
         ".java": Language.JAVA,
         ".kt": Language.KOTLIN,
-        ".lua": Language.LUA,
         ".rs": Language.RUST,
         ".go": Language.GO,
+        ".cpp": Language.CPP,
+        ".c": Language.C,
+        ".cs": Language.C_SHARP,
     }
     return language_mapping.get(file_extension, Language.UNKNOWN)
 
