@@ -16,7 +16,7 @@ With just a few keystrokes in your terminal by using OpenAI or 100% local LLMs w
 
 Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](https://github.com/ggerganov/llama.cpp) and [treesitter](https://github.com/tree-sitter/tree-sitter).
 
-![ezgif-4-53d6e634af](https://github.com/fynnfluegge/doc-comments.ai/assets/16321871/8f2756cb-36f9-43c6-94b1-658b89b49786)
+![doc_comments_ai_demo](https://github.com/fynnfluegge/doc-comments-ai/assets/16321871/664bc581-a2a0-49ea-87f9-343f49f05e97)
 
 </div>
 
