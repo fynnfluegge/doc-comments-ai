@@ -13,6 +13,7 @@ from doc_comments_ai import utils
 
 class GptModel(Enum):
     GPT_35 = "gpt-3.5-turbo"
+    GPT_35_16K = "gpt-3.5-turbo-16k"
     GPT_4 = "gpt-4"
 
 

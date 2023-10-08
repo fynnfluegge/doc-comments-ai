@@ -16,11 +16,7 @@ With just a few keystrokes in your terminal by using the OpenAI API or 100% loca
 
 Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](https://github.com/ggerganov/llama.cpp) and [treesitter](https://github.com/tree-sitter/tree-sitter).
 
-<kbd>
-  
 ![ezgif-4-53d6e634af](https://github.com/fynnfluegge/doc-comments.ai/assets/16321871/8f2756cb-36f9-43c6-94b1-658b89b49786)
-
-</kbd>
 
 </div>
 
@@ -50,10 +46,16 @@ Create also documentation comments in the method body:
 aicomment <RELATIVE_FILE_PATH> --inline
 ```
 
-Use GPT-4 model (Default is GPT-3.5):
+Use GPT-4 model:
 
 ```
 aicomment <RELATIVE_FILE_PATH> --gpt4
+```
+
+Use GPT-3.5-Turbo-16k model:
+
+```
+aicomment <RELATIVE_FILE_PATH> --gpt3_5-16k
 ```
 
 Use Azure OpenAI:
