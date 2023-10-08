@@ -101,7 +101,7 @@ def run():
             method_source_code = node.node.text.decode()
 
             tokens = utils.count_tokens(method_source_code)
-            if tokens > 2048 and not args.gpt4:
+            if tokens > 2048 and not (args.gpt4 or args.gpt3_5_16k):
                 print(
                     f"⚠️  Method {method_name} has too many tokens. "
                     f"Consider using {utils.get_bold_text('--gpt4')}. "
