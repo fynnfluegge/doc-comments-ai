@@ -1,6 +1,6 @@
 <div align="center">
 
-# Generate your code documentation with LLMs
+# Code documentation generation with LLMs
 
 [![Build](https://github.com/fynnfluegge/doc-comments.ai/actions/workflows/build.yaml/badge.svg)](https://github.com/fynnfluegge/doc-comments.ai/actions/workflows/build.yaml)
 [![Publish](https://github.com/fynnfluegge/doc-comments.ai/actions/workflows/publish.yaml/badge.svg)](https://github.com/fynnfluegge/doc-comments.ai/actions/workflows/publish.yaml)
@@ -12,7 +12,7 @@
 <div align="center">
 
 Focus on writing your code, let LLMs write the documentation for you.  
-With just a few keystrokes in your terminal by using the OpenAI API or 100% local LLMs without any data leaks.
+With just a few keystrokes in your terminal by using OpenAI or 100% local LLMs without any data leaks.
 
 Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](https://github.com/ggerganov/llama.cpp) and [treesitter](https://github.com/tree-sitter/tree-sitter).
 
@@ -106,8 +106,6 @@ Install with `pipx`:
 ```
 pipx install doc-comments-ai
 ```
-
-> It is recommended to use `pipx` for installation, nonetheless it is also possible to use `pip`.
 
 ### 1. OpenAI usage
 
