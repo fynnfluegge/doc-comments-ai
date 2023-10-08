@@ -109,7 +109,8 @@ def run():
             if tokens > 2048 and not (args.gpt4 or args.gpt3_5_16k):
                 print(
                     f"⚠️  Method {method_name} has too many tokens. "
-                    f"Consider using {utils.get_bold_text('--gpt4')}. "
+                    f"Consider using {utils.get_bold_text('--gpt4')} "
+                    f"or {utils.get_bold_text('--gpt3_5-16k')}. "
                     "Skipping for now..."
                 )
                 continue
