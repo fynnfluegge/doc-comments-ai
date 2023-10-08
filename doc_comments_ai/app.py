@@ -11,7 +11,12 @@ from doc_comments_ai.treesitter import Treesitter, TreesitterMethodNode
 
 def run():
     parser = argparse.ArgumentParser()
-    parser.add_argument("dir", nargs="?", default=os.getcwd())
+    parser.add_argument(
+        "dir",
+        nargs="?",
+        default=os.getcwd(),
+        help="File to parse and generate doc comments for.",
+    )
     parser.add_argument(
         "--local_model",
         type=str,
