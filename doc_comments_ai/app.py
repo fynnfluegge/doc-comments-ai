@@ -11,7 +11,12 @@ from doc_comments_ai.treesitter import Treesitter, TreesitterMethodNode
 
 def run():
     parser = argparse.ArgumentParser()
-    parser.add_argument("dir", nargs="?", default=os.getcwd())
+    parser.add_argument(
+        "dir",
+        nargs="?",
+        default=os.getcwd(),
+        help="File to parse and generate doc comments for.",
+    )
     parser.add_argument(
         "--local_model",
         type=str,
@@ -26,6 +31,11 @@ def run():
         "--gpt4",
         action="store_true",
         help="Uses GPT-4 (default GPT-3.5).",
+    )
+    parser.add_argument(
+        "--gpt3_5-16k",
+        action="store_true",
+        help="Uses GPT-3.5 16k (default GPT-3.5 4k).",
     )
     parser.add_argument(
         "--guided",
@@ -58,6 +68,9 @@ def run():
     if args.gpt4:
         utils.is_openai_api_key_available()
         llm_wrapper = llm.LLM(model=GptModel.GPT_4)
+    elif args.gpt3_5_16k:
+        utils.is_openai_api_key_available()
+        llm_wrapper = llm.LLM(model=GptModel.GPT_35_16K)
     else:
         utils.is_openai_api_key_available()
         llm_wrapper = llm.LLM(local_model=args.local_model)
@@ -93,10 +106,11 @@ def run():
             method_source_code = node.node.text.decode()
 
             tokens = utils.count_tokens(method_source_code)
-            if tokens > 2048 and not args.gpt4:
+            if tokens > 2048 and not (args.gpt4 or args.gpt3_5_16k):
                 print(
                     f"⚠️  Method {method_name} has too many tokens. "
-                    f"Consider using {utils.get_bold_text('--gpt4')}. "
+                    f"Consider using {utils.get_bold_text('--gpt4')} "
+                    f"or {utils.get_bold_text('--gpt3_5-16k')}. "
                     "Skipping for now..."
                 )
                 continue
