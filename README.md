@@ -102,7 +102,7 @@ aicomment <RELATIVE_FILE_PATH> --guided
 
 - Python >= 3.9
 
-## 🔧 Installation
+## 📦 Installation
 
 Install with `pipx`:
 
