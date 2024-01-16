@@ -22,4 +22,5 @@ class Language(Enum):
     PERL = "perl"
     LUA = "lua"
     R = "r"
+    HASKELL = "haskell"
     UNKNOWN = "unknown"

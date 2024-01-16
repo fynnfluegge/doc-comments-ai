@@ -10,6 +10,7 @@ from tests.fixtures.code_fixture_kt import kotlin_code_fixture
 from tests.fixtures.code_fixture_py import python_code_fixture
 from tests.fixtures.code_fixture_rs import rust_code_fixture
 from tests.fixtures.code_fixture_ts import typescript_code_fixture
+from tests.fixtures.code_fixture_hs import haskell_code_fixture
 from tests.fixtures.response_fixtures import (
     response_fixture, response_fixture_language_enclosed,
     response_fixture_with_text)

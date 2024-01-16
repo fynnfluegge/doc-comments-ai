@@ -34,6 +34,7 @@ def get_programming_language(file_extension: str) -> Language:
         ".cpp": Language.CPP,
         ".c": Language.C,
         ".cs": Language.C_SHARP,
+        ".hs": Language.HASKELL,
     }
     return language_mapping.get(file_extension, Language.UNKNOWN)
 

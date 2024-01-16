@@ -93,7 +93,7 @@ def test_java_query(java_code_fixture):
         languageMapping.put(".kt", Language.KOTLIN);
         languageMapping.put(".lua", Language.LUA);
 
-        // Return the corresponding language if it exists in the mapping, otherwise return Language.UNKNOWN 
+        // Return the corresponding language if it exists in the mapping, otherwise return Language.UNKNOWN
         return languageMapping.getOrDefault(fileExtension, Language.UNKNOWN);
     }"""
     )
@@ -465,7 +465,46 @@ def test_csharp_query(csharp_code_fixture):
         languageMapping[".kt"] = Language.KOTLIN;
         languageMapping[".lua"] = Language.LUA;
 
-        // Return the corresponding language if it exists in the mapping, otherwise return Language.UNKNOWN 
+        // Return the corresponding language if it exists in the mapping, otherwise return Language.UNKNOWN
         return languageMapping.TryGetValue(fileExtension, out var language) ? language : Language.UNKNOWN;
     }"""
+    )
+
+@pytest.mark.usefixtures("haskell_code_fixture")
+def test_hs_query(haskell_code_fixture):
+    tree_sitter = Treesitter.create_treesitter(Language.HASKELL)
+    treesitterNodes: list[TreesitterMethodNode] = tree_sitter.parse(
+        haskell_code_fixture.encode()
+    )
+
+    assert treesitterNodes.__len__() == 2
+
+    assert treesitterNodes[0].name == "getProgrammingLanguage"
+
+    assert treesitterNodes[1].name == "getFileExtension"
+
+    assert (
+        treesitterNodes[0].doc_comment
+        == """{-
+  Get the corresponding programming language based on the given file extension.
+
+  @param fileExtension The file extension of the programming file.
+  @return The corresponding programming language if it exists in the mapping, otherwise Language.UNKNOWN.
+-}"""
+    )
+
+    assert treesitterNodes[1].doc_comment is None
+
+    assert (
+        treesitterNodes[0].method_source_code
+        == """getProgrammingLanguage fileExtension =
+    let languageMapping = HM.insert ".py" PYTHON
+                          $ HM.insert ".js" JAVASCRIPT
+                          $ HM.insert ".ts" TYPESCRIPT
+                          $ HM.insert ".java" JAVA
+                          $ HM.insert ".kt" KOTLIN
+                          $ HM.singleton ".lua" LUA
+    in case lookup fileExtension languageMapping of
+         Just v -> v
+         Nothing -> UNKNOWN"""
     )

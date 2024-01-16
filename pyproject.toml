@@ -22,6 +22,9 @@ inquirer = "^3.1.3"
 [tool.poetry.scripts]
 aicomment = "doc_comments_ai.__main__:main"
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.4"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

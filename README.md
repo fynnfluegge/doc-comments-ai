@@ -97,6 +97,7 @@ aicomment <RELATIVE_FILE_PATH> --guided
 - [x] C++
 - [x] C
 - [x] C#
+- [x] Haskell
 
 ## 📋 Requirements
 
