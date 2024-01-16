@@ -35,10 +35,10 @@ public class LanguageDetection
         languageMapping[".kt"] = Language.KOTLIN;
         languageMapping[".lua"] = Language.LUA;
 
-        // Return the corresponding language if it exists in the mapping, otherwise return Language.UNKNOWN 
+        // Return the corresponding language if it exists in the mapping, otherwise return Language.UNKNOWN
         return languageMapping.TryGetValue(fileExtension, out var language) ? language : Language.UNKNOWN;
     }
-    
+
     public static string GetFileExtension(string fileName)
     {
         int dotPosition = fileName.LastIndexOf('.');
