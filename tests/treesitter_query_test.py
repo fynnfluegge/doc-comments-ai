@@ -494,7 +494,6 @@ def test_hs_query(haskell_code_fixture):
     )
 
     assert treesitterNodes[1].doc_comment is None
-    print(treesitterNodes[0].method_source_code)
 
     assert (
         treesitterNodes[0].method_source_code
