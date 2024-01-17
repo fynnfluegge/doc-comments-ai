@@ -64,7 +64,6 @@ def run():
     if args.azure_deployment:
         utils.is_azure_openai_environment_available()
         llm_wrapper = llm.LLM(azure_deployment=args.azure_deployment)
-
     elif args.gpt4:
         utils.is_openai_api_key_available()
         llm_wrapper = llm.LLM(model=GptModel.GPT_4)
