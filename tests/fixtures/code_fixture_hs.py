@@ -33,4 +33,8 @@ getFileExtension :: String -> String
 getFileExtension fileName =
     let dot = dropWhile ((\=) '.') fileName
     in dot
+
+fromText :: Text -> Maybe Text
+fromText "a" = Nothing
+fromText x = Just x
 """

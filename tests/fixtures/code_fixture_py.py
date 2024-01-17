@@ -32,5 +32,5 @@ def get_programming_language(file_extension: str) -> Language:
 
 def get_file_extension(file_name: str) -> str:
     return os.path.splitext(file_name)[-1]
-    
+
     """

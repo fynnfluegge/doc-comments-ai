@@ -102,7 +102,7 @@ def run():
                 if not input().lower() == "y":
                     continue
 
-            method_source_code = node.node.text.decode()
+            method_source_code = node.method_source_code
 
             tokens = utils.count_tokens(method_source_code)
             if tokens > 2048 and not (args.gpt4 or args.gpt3_5_16k):

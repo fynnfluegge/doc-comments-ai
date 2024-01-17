@@ -359,7 +359,7 @@ def test_c_query(c_code_fixture):
         const char *extension;
         enum Language language;
     };
-    
+
     struct LanguageMapping languageMapping[] = {
         {".py", PYTHON},
         {".js", JAVASCRIPT},
@@ -368,16 +368,16 @@ def test_c_query(c_code_fixture):
         {".kt", KOTLIN},
         {".lua", LUA},
     };
-    
+
     int numMappings = sizeof(languageMapping) / sizeof(languageMapping[0]);
-    
+
     // Iterate through the mappings and check if the file extension matches.
     for (int i = 0; i < numMappings; i++) {
         if (strcmp(fileExtension, languageMapping[i].extension) == 0) {
             return languageMapping[i].language;
         }
     }
-    
+
     return UNKNOWN;
 }"""
     )
@@ -477,7 +477,7 @@ def test_hs_query(haskell_code_fixture):
         haskell_code_fixture.encode()
     )
 
-    assert treesitterNodes.__len__() == 2
+    assert treesitterNodes.__len__() == 3
 
     assert treesitterNodes[0].name == "getProgrammingLanguage"
 
@@ -497,7 +497,8 @@ def test_hs_query(haskell_code_fixture):
 
     assert (
         treesitterNodes[0].method_source_code
-        == """getProgrammingLanguage fileExtension =
+        == """getProgrammingLanguage :: String -> Language
+getProgrammingLanguage fileExtension =
     let languageMapping = HM.insert ".py" PYTHON
                           $ HM.insert ".js" JAVASCRIPT
                           $ HM.insert ".ts" TYPESCRIPT
@@ -507,4 +508,11 @@ def test_hs_query(haskell_code_fixture):
     in case lookup fileExtension languageMapping of
          Just v -> v
          Nothing -> UNKNOWN"""
+    )
+
+    assert (
+        treesitterNodes[2].method_source_code
+        == """fromText :: Text -> Maybe Text
+fromText "a" = Nothing
+fromText x = Just x"""
     )
