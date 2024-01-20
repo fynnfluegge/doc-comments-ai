@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "doc-comments-ai"
-version = "0.1.13"
+version = "0.1.14"
 description = ""
 authors = ["fynnfluegge <fynnfluegge@gmx.de>"]
 readme = "README.md"
