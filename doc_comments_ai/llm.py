@@ -4,9 +4,10 @@ import sys
 from enum import Enum
 
 import inquirer
-from langchain import LLMChain, PromptTemplate
+from langchain.chains import LLMChain
 from langchain.chat_models import ChatLiteLLM
 from langchain.llms import LlamaCpp
+from langchain.prompts import PromptTemplate
 
 from doc_comments_ai import utils
 
