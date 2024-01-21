@@ -12,11 +12,12 @@ class TreesitterMethodNode:
         self,
         name: "str | bytes | None",
         doc_comment: "str | None",
+        method_source_code: "str | None",
         node: tree_sitter.Node,
     ):
         self.name = name
         self.doc_comment = doc_comment
-        self.method_source_code = node.text.decode()
+        self.method_source_code = method_source_code or node.text.decode()
         self.node = node
 
 
@@ -46,7 +47,7 @@ class Treesitter(ABC):
             method_name = self._query_method_name(method["method"])
             doc_comment = method["doc_comment"]
             result.append(
-                TreesitterMethodNode(method_name, doc_comment, method["method"])
+                TreesitterMethodNode(method_name, doc_comment, None, method["method"])
             )
         return result
 
@@ -62,15 +63,6 @@ class Treesitter(ABC):
                 and node.prev_named_sibling.type == self.doc_comment_identifier
             ):
                 doc_comment_node = node.prev_named_sibling.text.decode()
-            else:
-                # added for haskell purpose.
-                if node.prev_named_sibling.type == "signature":
-                    prev_node = node.prev_named_sibling
-                    if (
-                        prev_node.prev_named_sibling
-                        and prev_node.prev_named_sibling.type == self.doc_comment_identifier
-                    ):
-                        doc_comment_node = prev_node.prev_named_sibling.text.decode()
             methods.append({"method": node, "doc_comment": doc_comment_node})
         else:
             for child in node.children:

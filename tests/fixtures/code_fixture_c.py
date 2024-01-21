@@ -24,7 +24,7 @@ enum Language getProgrammingLanguage(const char *fileExtension) {
         const char *extension;
         enum Language language;
     };
-    
+
     struct LanguageMapping languageMapping[] = {
         {".py", PYTHON},
         {".js", JAVASCRIPT},
@@ -33,16 +33,16 @@ enum Language getProgrammingLanguage(const char *fileExtension) {
         {".kt", KOTLIN},
         {".lua", LUA},
     };
-    
+
     int numMappings = sizeof(languageMapping) / sizeof(languageMapping[0]);
-    
+
     // Iterate through the mappings and check if the file extension matches.
     for (int i = 0; i < numMappings; i++) {
         if (strcmp(fileExtension, languageMapping[i].extension) == 0) {
             return languageMapping[i].language;
         }
     }
-    
+
     return UNKNOWN;
 }
 
