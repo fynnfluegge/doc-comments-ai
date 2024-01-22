@@ -82,7 +82,7 @@ def run():
         utils.is_openai_api_key_available()
         llm_wrapper = llm.LLM(model=GptModel.GPT_35_16K)
     elif args.ollama_model:
-        llm_wrapper = llm.LLM(ollama=[args.ollama_base_url, args.ollama_model])
+        llm_wrapper = llm.LLM(ollama=(args.ollama_base_url, args.ollama_model))
     else:
         utils.is_openai_api_key_available()
         llm_wrapper = llm.LLM(local_model=args.local_model)
