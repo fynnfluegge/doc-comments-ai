@@ -6,7 +6,7 @@ from enum import Enum
 import inquirer
 from langchain.chains import LLMChain
 from langchain.chat_models import ChatLiteLLM
-from langchain.llms import LlamaCpp
+from langchain.llms import LlamaCpp, Ollama
 from langchain.prompts import PromptTemplate
 
 from doc_comments_ai import utils
@@ -24,6 +24,7 @@ class LLM:
         model: GptModel = GptModel.GPT_35,
         local_model: "str | None" = None,
         azure_deployment: "str | None" = None,
+        ollama: "tuple[str,str] | None" = None,
     ):
         max_tokens = 2048 if model == GptModel.GPT_35 else 4096
         if local_model is not None:
@@ -40,6 +41,13 @@ class LLM:
                 temperature=0.8,
                 max_tokens=max_tokens,
                 model=f"azure/{azure_deployment}",
+            )
+        elif ollama is not None:
+            self.llm = Ollama(
+                base_url=ollama[0],
+                model=ollama[1],
+                temperature=0.8,
+                num_ctx=max_tokens,
             )
         else:
             self.llm = ChatLiteLLM(
