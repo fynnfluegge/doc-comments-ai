@@ -35,45 +35,41 @@ Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](ht
 ## 🚀 Usage
 
 Create documentations for any method in a file specified by `<RELATIVE_FILE_PATH>` with GPT-3.5-Turbo model:
-
 ```
 aicomment <RELATIVE_FILE_PATH>
 ```
 
 Create also documentation comments in the method body:
-
 ```
 aicomment <RELATIVE_FILE_PATH> --inline
 ```
+Guided mode, confirm documentation generation for each method:
+```
+aicomment <RELATIVE_FILE_PATH> --guided
+```
 
 Use GPT-4 model:
-
 ```
 aicomment <RELATIVE_FILE_PATH> --gpt4
 ```
 
 Use GPT-3.5-Turbo-16k model:
-
 ```
 aicomment <RELATIVE_FILE_PATH> --gpt3_5-16k
 ```
 
 Use Azure OpenAI:
-
 ```
 aicomment <RELATIVE_FILE_PATH> --azure-deployment <DEPLOYMENT_NAME>
 ```
 
-Use a local LLM on your machine:
-
+Use local Llama.cpp:
 ```
 aicomment <RELATIVE_FILE_PATH> --local_model <MODEL_PATH>
 ```
-
-Guided mode, confirm documentation generation for each method:
-
+Use local Ollama:
 ```
-aicomment <RELATIVE_FILE_PATH> --guided
+aicomment <RELATIVE_FILE_PATH> --ollama-model <OLLAMA_MODEL>
 ```
 
 > [!NOTE]  
@@ -129,9 +125,9 @@ export AZURE_API_KEY = <YOUR_AZURE_OPENAI_API_KEY>
 export AZURE_API_VERSION = "2023-05-15"
 ```
 
-### 3. Local LLM usage
+### 3. Local LLM usage with Llama.cpp
 
-By using a local LLM no API key is required. On first usage of `--local_model` you will be asked for confirmation to intall `llama-cpp-python` with its dependencies.
+When using a local LLM no API key is required. On first usage of `--local_model` you will be asked for confirmation to intall `llama-cpp-python` with its dependencies.
 The installation process will take care of the hardware-accelerated build tailored to your hardware and OS. For further details see:
 [installation-with-hardware-acceleration](https://github.com/abetlen/llama-cpp-python#installation-with-hardware-acceleration)
 
@@ -146,3 +142,8 @@ After the download has finished the absolute path of the `.gguf` file is printed
 
 > [!IMPORTANT]  
 > Since `llama.cpp` is used the model must be in the `.gguf` format.
+
+## ✨ Contributing
+
+If you are missing a feature or facing a bug don't hesitate to open an issue or raise a PR.
+Any kind of contribution is highly appreciated!
