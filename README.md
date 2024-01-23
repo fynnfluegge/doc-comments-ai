@@ -14,7 +14,7 @@
 Focus on writing your code, let LLMs write the documentation for you.  
 With just a few keystrokes in your terminal by using OpenAI or 100% local LLMs without any data leaks.
 
-Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](https://github.com/ggerganov/llama.cpp) and [treesitter](https://github.com/tree-sitter/tree-sitter).
+Built with [langchain](https://github.com/langchain-ai/langchain), [treesitter](https://github.com/tree-sitter/tree-sitter), [lama.cpp](https://github.com/ggerganov/llama.cpp) and [ollama](https://github.com/jmorganca/ollama)
 
 ![doc_comments_ai_demo](https://github.com/fynnfluegge/doc-comments-ai/assets/16321871/664bc581-a2a0-49ea-87f9-343f49f05e97)
 
