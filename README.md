@@ -101,11 +101,16 @@ aicomment <RELATIVE_FILE_PATH> --ollama-model <OLLAMA_MODEL>
 
 ## 📦 Installation
 
-Install with `pipx`:
-
+Install in an isolated environment with `pipx`:
 ```
 pipx install doc-comments-ai
 ```
+If you are facing issues using pipx uou can also install directly from source through PyPI with
+```
+pip install doc-comments-ai
+```
+However, it is recommended to use pipx instead to benefit from isolated environments for the dependencies.  
+For further help visit the [Troubleshooting](https://github.com/fynnfluegge/doc-comments-ai?tab=readme-ov-file#-troubleshooting) section.
 
 ### 1. OpenAI usage
 
@@ -143,7 +148,18 @@ After the download has finished the absolute path of the `.gguf` file is printed
 > [!IMPORTANT]  
 > Since `llama.cpp` is used the model must be in the `.gguf` format.
 
-## ✨ Contributing
+## 🛟 Troubleshooting
+- #### During installation with `pipx`
+  ```
+  pip failed to build package: tiktoken
+
+  Some possibly relevant errors from pip install:
+    error: subprocess-exited-with-error
+    error: can't find Rust compiler
+  ```
+  Make sure the rust compiler is installed on your system from [here](https://www.rust-lang.org/tools/install).
+
+## 🌟 Contributing
 
 If you are missing a feature or facing a bug don't hesitate to open an issue or raise a PR.
 Any kind of contribution is highly appreciated!
