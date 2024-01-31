@@ -141,10 +141,8 @@ def run():
             programming_language.value, method_source_code, args.inline, args.comment_with_source_code
         )
 
-        gen_tokens = utils.count_tokens(doc_comment_result)
-        print("Generated Tokens - ", gen_tokens)
-        print(doc_comment_result)
-        total_generated_tokens += gen_tokens
+        generated_tokens = utils.count_tokens(doc_comment_result)
+        total_generated_tokens += generated_tokens
 
         if args.inline or args.comment_with_source_code:
             parsed_doc_comment = utils.extract_content_from_markdown_code_block(
@@ -165,5 +163,5 @@ def run():
 
         print(f"✅ Doc comment for {method_name} generated.")
     
-    print("Total Tokens - ", total_original_tokens)
-    print("Total Generated Tokens - ", total_generated_tokens)
+    print(f"📊 Total Input Tokens: {total_original_tokens}")
+    print(f"🚀 Total Generated Tokens: {total_generated_tokens}")
