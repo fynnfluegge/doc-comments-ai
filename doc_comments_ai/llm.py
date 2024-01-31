@@ -54,10 +54,10 @@ class LLM:
                 temperature=0.8, max_tokens=max_tokens, model=model.value
             )
         self.template = (
+            "Act as a {language} language expert. "
             "Add a detailed doc comment to the following {language} method:\n{code}\n"
             "The doc comment should describe what the method does. "
-            "{inline_comments} "
-            "Return the method implementaion with the doc comment as a markdown code block. "
+            "{comment_instructions} "
             "Don't include any explanations {haskell_missing_signature}in your response."
         )
         self.prompt = PromptTemplate(
@@ -65,23 +65,33 @@ class LLM:
             input_variables=[
                 "language",
                 "code",
-                "inline_comments",
+                "comment_instructions",
                 "Haskell_missing_signature",
             ],
         )
         self.chain = LLMChain(llm=self.llm, prompt=self.prompt)
 
-    def generate_doc_comment(self, language, code, inline=False):
+    def generate_doc_comment(self, language, code, inline=False, comment_with_source_code=False):
         """
         Generates a doc comment for the given method
         """
 
         if inline:
-            inline_comments = (
+            comment_instructions = (
                 "Add inline comments to the method body where it makes sense."
+                "Return the complete method implementation with the doc comment as a markdown code block. "
+                "IMPORTANT: Ensure that absolutely no part of the original function is omitted or modified in your response. Every line, including imports, comments, and variable bindings, should be retained in the output. This is crucial to satisfy my use case."
+            )
+        elif comment_with_source_code:
+            comment_instructions = (
+                "Return the complete method implementation with the doc comment as a markdown code block. "
+                "IMPORTANT: Ensure that absolutely no part of the original function is omitted or modified in your response. Every line, including imports, comments, and variable bindings, should be retained in the output. This is crucial to satisfy my use case."
             )
         else:
-            inline_comments = ""
+            comment_instructions = (
+                "Return the doc comment as a markdown block. "
+                f"IMPORTANT: Please avoid writing any code in the markdown block. Ensure that the markdown block contains only doc comments and enclose them appropriately using the correct comment delimiters for the {language} language. This is very important to satisfy my use case."
+            )
 
         if language == "haskell":
             haskell_missing_signature = "and missing type signatures "
@@ -91,7 +101,7 @@ class LLM:
         input = {
             "language": language,
             "code": code,
-            "inline_comments": inline_comments,
+            "comment_instructions": comment_instructions,
             "haskell_missing_signature": haskell_missing_signature,
         }
 
