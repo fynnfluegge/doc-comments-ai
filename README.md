@@ -14,7 +14,7 @@
 Focus on writing your code, let LLMs write the documentation for you.  
 With just a few keystrokes in your terminal by using OpenAI or 100% local LLMs without any data leaks.
 
-Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](https://github.com/ggerganov/llama.cpp) and [treesitter](https://github.com/tree-sitter/tree-sitter).
+Built with [langchain](https://github.com/langchain-ai/langchain), [treesitter](https://github.com/tree-sitter/tree-sitter), [lama.cpp](https://github.com/ggerganov/llama.cpp) and [ollama](https://github.com/jmorganca/ollama)
 
 ![doc_comments_ai_demo](https://github.com/fynnfluegge/doc-comments-ai/assets/16321871/664bc581-a2a0-49ea-87f9-343f49f05e97)
 
@@ -35,45 +35,41 @@ Built with [langchain](https://github.com/langchain-ai/langchain), [lama.cpp](ht
 ## 🚀 Usage
 
 Create documentations for any method in a file specified by `<RELATIVE_FILE_PATH>` with GPT-3.5-Turbo model:
-
 ```
 aicomment <RELATIVE_FILE_PATH>
 ```
 
 Create also documentation comments in the method body:
-
 ```
 aicomment <RELATIVE_FILE_PATH> --inline
 ```
+Guided mode, confirm documentation generation for each method:
+```
+aicomment <RELATIVE_FILE_PATH> --guided
+```
 
 Use GPT-4 model:
-
 ```
 aicomment <RELATIVE_FILE_PATH> --gpt4
 ```
 
 Use GPT-3.5-Turbo-16k model:
-
 ```
 aicomment <RELATIVE_FILE_PATH> --gpt3_5-16k
 ```
 
 Use Azure OpenAI:
-
 ```
 aicomment <RELATIVE_FILE_PATH> --azure-deployment <DEPLOYMENT_NAME>
 ```
 
-Use a local LLM on your machine:
-
+Use local Llama.cpp:
 ```
 aicomment <RELATIVE_FILE_PATH> --local_model <MODEL_PATH>
 ```
-
-Guided mode, confirm documentation generation for each method:
-
+Use local Ollama:
 ```
-aicomment <RELATIVE_FILE_PATH> --guided
+aicomment <RELATIVE_FILE_PATH> --ollama-model <OLLAMA_MODEL>
 ```
 
 > [!NOTE]  
@@ -105,11 +101,16 @@ aicomment <RELATIVE_FILE_PATH> --guided
 
 ## 📦 Installation
 
-Install with `pipx`:
-
+Install in an isolated environment with `pipx`:
 ```
 pipx install doc-comments-ai
 ```
+If you are facing issues using pipx uou can also install directly from source through PyPI with
+```
+pip install doc-comments-ai
+```
+However, it is recommended to use pipx instead to benefit from isolated environments for the dependencies.  
+For further help visit the [Troubleshooting](https://github.com/fynnfluegge/doc-comments-ai?tab=readme-ov-file#-troubleshooting) section.
 
 ### 1. OpenAI usage
 
@@ -129,9 +130,9 @@ export AZURE_API_KEY = <YOUR_AZURE_OPENAI_API_KEY>
 export AZURE_API_VERSION = "2023-05-15"
 ```
 
-### 3. Local LLM usage
+### 3. Local LLM usage with Llama.cpp
 
-By using a local LLM no API key is required. On first usage of `--local_model` you will be asked for confirmation to intall `llama-cpp-python` with its dependencies.
+When using a local LLM no API key is required. On first usage of `--local_model` you will be asked for confirmation to intall `llama-cpp-python` with its dependencies.
 The installation process will take care of the hardware-accelerated build tailored to your hardware and OS. For further details see:
 [installation-with-hardware-acceleration](https://github.com/abetlen/llama-cpp-python#installation-with-hardware-acceleration)
 
@@ -146,3 +147,19 @@ After the download has finished the absolute path of the `.gguf` file is printed
 
 > [!IMPORTANT]  
 > Since `llama.cpp` is used the model must be in the `.gguf` format.
+
+## 🛟 Troubleshooting
+- #### During installation with `pipx`
+  ```
+  pip failed to build package: tiktoken
+
+  Some possibly relevant errors from pip install:
+    error: subprocess-exited-with-error
+    error: can't find Rust compiler
+  ```
+  Make sure the rust compiler is installed on your system from [here](https://www.rust-lang.org/tools/install).
+
+## 🌟 Contributing
+
+If you are missing a feature or facing a bug don't hesitate to open an issue or raise a PR.
+Any kind of contribution is highly appreciated!

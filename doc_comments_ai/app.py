@@ -47,6 +47,17 @@ def run():
         type=str,
         help="Azure OpenAI deployment name.",
     )
+    parser.add_argument(
+        "--ollama-model",
+        type=str,
+        help="Ollama model for base url",
+    )
+    parser.add_argument(
+        "--ollama-base-url",
+        type=str,
+        default="http://localhost:11434",
+        help="Ollama base url",
+    )
 
     if sys.argv.__len__() < 2:
         sys.exit("Please provide a file")
@@ -70,6 +81,8 @@ def run():
     elif args.gpt3_5_16k:
         utils.is_openai_api_key_available()
         llm_wrapper = llm.LLM(model=GptModel.GPT_35_16K)
+    elif args.ollama_model:
+        llm_wrapper = llm.LLM(ollama=(args.ollama_base_url, args.ollama_model))
     else:
         utils.is_openai_api_key_available()
         llm_wrapper = llm.LLM(local_model=args.local_model)
@@ -102,7 +115,7 @@ def run():
                 if not input().lower() == "y":
                     continue
 
-            method_source_code = node.node.text.decode()
+            method_source_code = node.method_source_code
 
             tokens = utils.count_tokens(method_source_code)
             if tokens > 2048 and not (args.gpt4 or args.gpt3_5_16k):

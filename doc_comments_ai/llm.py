@@ -6,7 +6,7 @@ from enum import Enum
 import inquirer
 from langchain.chains import LLMChain
 from langchain.chat_models import ChatLiteLLM
-from langchain.llms import LlamaCpp
+from langchain.llms import LlamaCpp, Ollama
 from langchain.prompts import PromptTemplate
 
 from doc_comments_ai import utils
@@ -22,8 +22,9 @@ class LLM:
     def __init__(
         self,
         model: GptModel = GptModel.GPT_35,
-        local_model: str | None = None,
-        azure_deployment: str | None = None,
+        local_model: "str | None" = None,
+        azure_deployment: "str | None" = None,
+        ollama: "tuple[str,str] | None" = None,
     ):
         max_tokens = 2048 if model == GptModel.GPT_35 else 4096
         if local_model is not None:
@@ -41,6 +42,13 @@ class LLM:
                 max_tokens=max_tokens,
                 model=f"azure/{azure_deployment}",
             )
+        elif ollama is not None:
+            self.llm = Ollama(
+                base_url=ollama[0],
+                model=ollama[1],
+                temperature=0.8,
+                num_ctx=max_tokens,
+            )
         else:
             self.llm = ChatLiteLLM(
                 temperature=0.8, max_tokens=max_tokens, model=model.value
@@ -50,11 +58,16 @@ class LLM:
             "The doc comment should describe what the method does. "
             "{inline_comments} "
             "Return the method implementaion with the doc comment as a markdown code block. "
-            "Don't include any explanations in your response."
+            "Don't include any explanations {haskell_missing_signature}in your response."
         )
         self.prompt = PromptTemplate(
             template=self.template,
-            input_variables=["language", "code", "inline_comments"],
+            input_variables=[
+                "language",
+                "code",
+                "inline_comments",
+                "Haskell_missing_signature",
+            ],
         )
         self.chain = LLMChain(llm=self.llm, prompt=self.prompt)
 
@@ -70,7 +83,17 @@ class LLM:
         else:
             inline_comments = ""
 
-        input = {"language": language, "code": code, "inline_comments": inline_comments}
+        if language == "haskell":
+            haskell_missing_signature = "and missing type signatures "
+        else:
+            haskell_missing_signature = ""
+
+        input = {
+            "language": language,
+            "code": code,
+            "inline_comments": inline_comments,
+            "haskell_missing_signature": haskell_missing_signature,
+        }
 
         documented_code = self.chain.run(input)
 
