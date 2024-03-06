@@ -21,7 +21,7 @@ def run():
         "--line_threshold",
         default=3,
         type=int,
-        help="Generate comments for functions with lines longer than the specified threshold (default: 5)."
+        help="Generate comments for functions with length longer than the specified threshold (default: 3)."
     )
     parser.add_argument(
         "--local_model",
