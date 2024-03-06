@@ -101,6 +101,7 @@ def write_only_comments_to_file(
             modified_content = (
                 file_content[:start_pos].rstrip()
                 + "\n"
+                + "\n------ AI Generated Comment ------\n"
                 + comment
                 + "\n"
                 + original_code

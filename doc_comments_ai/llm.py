@@ -90,7 +90,15 @@ class LLM:
         else:
             comment_instructions = (
                 "Return the doc comment as a markdown block. "
-                f"IMPORTANT: Please avoid writing any code in the markdown block. Ensure that the markdown block contains only doc comments and enclose them appropriately using the correct comment delimiters for the {language} language. This is very important to satisfy my use case."
+                "If the doc comment consists of more than one sentence then please follow multi-line comments."
+                f"IMPORTANT: Please avoid writing any code in the markdown block. Ensure that the markdown block contains only doc comments and enclose them appropriately using the correct comment delimiters for the {language} language."
+                """
+                Example Comment for Haskell language:
+                -- | This is the first line of a demo comment.
+                -- This is the second line of a demo comment."
+                i.e. Correct comment delimiters for Haskell language is '-- ' where the first line of the comment will be prefixed with '-- | '.
+                """
+                "IMPORTANT: Please follow only the specified format. This is very important to satisfy my use case."
             )
 
         if language == "haskell":
@@ -106,7 +114,6 @@ class LLM:
         }
 
         documented_code = self.chain.run(input)
-
         return documented_code
 
     def install_llama_cpp(self):

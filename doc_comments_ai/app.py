@@ -18,6 +18,12 @@ def run():
         help="File to parse and generate doc comments for.",
     )
     parser.add_argument(
+        "--line_threshold",
+        default=3,
+        type=int,
+        help="Generate comments for functions with lines longer than the specified threshold (default: 5)."
+    )
+    parser.add_argument(
         "--local_model",
         type=str,
         help="Path to the local model.",
@@ -69,6 +75,10 @@ def run():
 
     args = parser.parse_args()
 
+    if args.line_threshold <= 0:
+        print("Warning: The line_threshold should be a positive integer. No comments will be generated.")
+        return
+
     file_name = args.dir
 
     if not os.path.isfile(file_name):
@@ -112,7 +122,7 @@ def run():
 
         if node.doc_comment:
             print(
-                f"⚠️  Method {method_name} already has a doc comment. Skipping..."
+                f"⁉️ Method {method_name} already has a doc comment. Skipping..."
             )
             continue
 
@@ -127,10 +137,16 @@ def run():
         total_original_tokens += tokens
         if tokens > 2048 and not (args.gpt4 or args.gpt3_5_16k):
             print(
-                f"⚠️  Method {method_name} has too many tokens. "
+                f"❌ Method {method_name} has too many tokens. "
                 f"Consider using {utils.get_bold_text('--gpt4')} "
                 f"or {utils.get_bold_text('--gpt3_5-16k')}. "
                 "Skipping for now..."
+            )
+            continue
+
+        if method_source_code.count('\n') <= args.line_threshold:
+            print(
+                f"❌ Method {method_name} does not satisfy the line_threshold. Skipping..."
             )
             continue
 
