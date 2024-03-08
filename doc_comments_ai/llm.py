@@ -98,6 +98,8 @@ class LLM:
                 -- This is the second line of a demo comment."
                 i.e. Correct comment delimiters for Haskell language is '-- ' where the first line of the comment will be prefixed with '-- | '.
                 """
+                "Strictly avoid writing detailed comments for self-explanatory functions."
+                "IMPORTANT: Strictly refrain from detailing input parameters or specifying what the function takes as input and its definition. This is crucial to meet my use case."
                 "IMPORTANT: Please follow only the specified format. This is very important to satisfy my use case."
             )
 
