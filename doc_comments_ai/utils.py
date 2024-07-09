@@ -71,8 +71,11 @@ def write_code_snippet_to_file(
             end_pos = start_pos + len(original_code)
             indentation = file_content[:start_pos].split("\n")[-1]
             modeified_lines = modified_code.split("\n")
+            first_line = modeified_lines.pop(0)
             indented_modified_lines = [indentation + line for line in modeified_lines]
-            indented_modified_code = "\n".join(indented_modified_lines)
+            indented_modified_code = (
+                first_line + "\n" + "\n".join(indented_modified_lines)
+            )
             modified_content = (
                 file_content[:start_pos]
                 + indented_modified_code
