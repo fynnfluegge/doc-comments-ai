@@ -30,7 +30,7 @@ Built with [langchain](https://github.com/langchain-ai/langchain), [treesitter](
 - 🌐&nbsp; Azure OpenAI support
 
 > [!NOTE]  
-> Documentations will only be added to files without unstaged changes, so nothing is overwritten.
+> Documentation will only be added to files without unstaged changes, so nothing is overwritten.
 
 ## 🚀 Usage
 
