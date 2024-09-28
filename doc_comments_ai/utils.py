@@ -81,10 +81,39 @@ def write_code_snippet_to_file(
             with open(file_path, "w", encoding="utf-8") as file:
                 file.write(modified_content)
 
+# Working code
+def write_only_comments_to_file(
+    file_path: str, original_code: str, comment: str
+) -> None:
+    """
+    Writes only the comment back to the file.
+
+    Args:
+        file_path (str): The path of the file to write to.
+        original_code (str): The original code snippet to be replaced.
+        modified_code (str): The modified code snippet.
+    """
+    with open(file_path, "r", encoding="utf-8") as file:
+        file_content = file.read()
+        start_pos = file_content.find(original_code)
+        if start_pos != -1:
+            end_pos = start_pos + len(original_code)
+            modified_content = (
+                file_content[:start_pos].rstrip()
+                + "\n"
+                + "\n------ AI Generated Comment ------\n"
+                + comment
+                + "\n"
+                + original_code
+                + file_content[end_pos:]
+            )
+            with open(file_path, "w", encoding="utf-8") as file:
+                file.write(modified_content)
+
 
 def extract_content_from_markdown_code_block(markdown_code_block) -> str:
     """
-    Extracts the content from a markdown code block.
+    Extracts the content (comments + code) from a markdown code block.
 
     :param markdown_code_block: A string containing a markdown code block.
     :return: The content within the code block, with leading and trailing whitespace removed if found,
@@ -97,6 +126,58 @@ def extract_content_from_markdown_code_block(markdown_code_block) -> str:
         return match.group(1).strip()
     else:
         return markdown_code_block.strip()
+
+# This function retrieves the comment pattern for a specified programming language
+def get_comments_pattern_for_language(language):
+    comment_patterns = {
+        "python": r"#.*",
+        "javascript": r"\/\/.*|\/\*[\s\S]*?\*\/",
+        "typescript": r"\/\/.*|\/\*[\s\S]*?\*\/",
+        "java": r"\/\/.*|\/\*[\s\S]*?\*\/",
+        "cpp": r"\/\/.*|\/\*[\s\S]*?\*\/",
+        "c": r"\/\/.*|\/\*[\s\S]*?\*\/",
+        "html": r"<!--.*?-->",
+        "css": r"\/\*[\s\S]*?\*\/",
+        "php": r"#.*|\/\/.*|\/\*[\s\S]*?\*\/",
+        "ruby": r"#.*",
+        "go": r"\/\/.*",
+        "rust": r"\/\/.*|\/\*[\s\S]*?\*\/",
+        "swift": r"\/\/.*|\/\*[\s\S]*?\*\/",
+        "kotlin": r"\/\/.*|\/\*[\s\S]*?\*\/",
+        "c_sharp": r"\/\/.*|\/\*[\s\S]*?\*\/",
+        "objective_c": r"\/\/.*|\/\*[\s\S]*?\*\/",
+        "scala": r"\/\/.*|\/\*[\s\S]*?\*\/",
+        "perl": r"#.*",
+        "lua": r"--[^\n]*",
+        "r": r"#.*",
+        "haskell": r"--[^\n]*|\{-[\s\S]*?-\}|--[^\n]*$",
+        # Add more languages and their comment patterns as needed
+    }
+
+    return comment_patterns.get(language, None)
+
+
+def extract_comments_from_markdown_code_block(language, markdown_code_block) -> str:
+    """
+    Extracts only the comments from a markdown code block.
+
+    :param language: A string representing the programming language for which the comment pattern is requested.
+    :param markdown_code_block: A string containing a markdown code block.
+    :return: The comment within the code block, with leading and trailing whitespace removed if found,
+             or the original markdown code block if no match is found.
+    """
+
+    comment_pattern = get_comments_pattern_for_language(language)
+    if comment_pattern is None:
+        return markdown_code_block  # Return original if language is unknown
+
+    # Find all matches in the input string
+    matches = re.findall(comment_pattern, markdown_code_block, re.DOTALL)
+
+    # Combine multiline matches into a single string
+    comments = '\n'.join(match.strip() for match in matches)
+
+    return comments
 
 
 def get_bold_text(text):

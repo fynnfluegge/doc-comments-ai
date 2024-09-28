@@ -18,14 +18,25 @@ def run():
         help="File to parse and generate doc comments for.",
     )
     parser.add_argument(
+        "--line_threshold",
+        default=3,
+        type=int,
+        help="Generate comments for functions with length longer than the specified threshold (default: 3)."
+    )
+    parser.add_argument(
         "--local_model",
         type=str,
         help="Path to the local model.",
     )
     parser.add_argument(
+        "--comment_with_source_code",
+        action="store_true",
+        help="Generates comments with code included. (default - It generates only comment.)"
+    )
+    parser.add_argument(
         "--inline",
         action="store_true",
-        help="Adds inline comments to the code if necessary.",
+        help="Adds inline comments to the code if necessary. Generates comments inclusive of code, while disregarding the comment_with_source_code parameter.",
     )
     parser.add_argument(
         "--gpt4",
@@ -64,6 +75,10 @@ def run():
 
     args = parser.parse_args()
 
+    if args.line_threshold <= 0:
+        print("Warning: The line_threshold should be a positive integer. No comments will be generated.")
+        return
+
     file_name = args.dir
 
     if not os.path.isfile(file_name):
@@ -86,8 +101,6 @@ def run():
     else:
         llm_wrapper = llm.LLM(local_model=args.local_model)
 
-    generated_doc_comments = {}
-
     with open(file_name, "r") as file:
         # Read the entire content of the file into a string
         file_bytes = file.read().encode()
@@ -100,52 +113,70 @@ def run():
             file_bytes
         )
 
-        for node in treesitterNodes:
-            method_name = utils.get_bold_text(node.name)
+    total_original_tokens = 0
+    total_generated_tokens = 0
 
-            if node.doc_comment:
-                print(
-                    f"⚠️  Method {method_name} already has a doc comment. Skipping..."
-                )
+    for node in treesitterNodes:
+        method_name = utils.get_bold_text(node.name)
+
+        if node.doc_comment:
+            print(
+                f"⁉️ Method {method_name} already has a doc comment. Skipping..."
+            )
+            continue
+
+        if args.guided:
+            print(f"Generate doc for {utils.get_bold_text(method_name)}? (y/n)")
+            if not input().lower() == "y":
                 continue
 
-            if args.guided:
-                print(f"Generate doc for {utils.get_bold_text(method_name)}? (y/n)")
-                if not input().lower() == "y":
-                    continue
+        method_source_code = node.method_source_code
 
-            method_source_code = node.method_source_code
-
-            tokens = utils.count_tokens(method_source_code)
-            if tokens > 2048 and not (args.gpt4 or args.gpt3_5_16k):
-                print(
-                    f"⚠️  Method {method_name} has too many tokens. "
-                    f"Consider using {utils.get_bold_text('--gpt4')} "
-                    f"or {utils.get_bold_text('--gpt3_5-16k')}. "
-                    "Skipping for now..."
-                )
-                continue
-
-            spinner = yaspin(text=f"🔧 Generating doc comment for {method_name}...")
-            spinner.start()
-
-            documented_method_source_code = llm_wrapper.generate_doc_comment(
-                programming_language.value, method_source_code, args.inline
+        tokens = utils.count_tokens(method_source_code)
+        total_original_tokens += tokens
+        if tokens > 2048 and not (args.gpt4 or args.gpt3_5_16k):
+            print(
+                f"❌ Method {method_name} has too many tokens. "
+                f"Consider using {utils.get_bold_text('--gpt4')} "
+                f"or {utils.get_bold_text('--gpt3_5-16k')}. "
+                "Skipping for now..."
             )
+            continue
 
-            generated_doc_comments[
-                method_source_code
-            ] = utils.extract_content_from_markdown_code_block(
-                documented_method_source_code
+        if method_source_code.count('\n') <= args.line_threshold:
+            print(
+                f"❌ Method {method_name} does not satisfy the line_threshold. Skipping..."
             )
+            continue
 
-            spinner.stop()
+        spinner = yaspin(text=f"🔧 Generating doc comment for {method_name}...")
+        spinner.start()
 
-            print(f"✅ Doc comment for {method_name} generated.")
-
-    file.close()
-
-    for original_code, generated_doc_comment in generated_doc_comments.items():
-        utils.write_code_snippet_to_file(
-            file_name, original_code, generated_doc_comment
+        doc_comment_result = llm_wrapper.generate_doc_comment(
+            programming_language.value, method_source_code, args.inline, args.comment_with_source_code
         )
+
+        generated_tokens = utils.count_tokens(doc_comment_result)
+        total_generated_tokens += generated_tokens
+
+        if args.inline or args.comment_with_source_code:
+            parsed_doc_comment = utils.extract_content_from_markdown_code_block(
+                doc_comment_result
+            )
+            utils.write_code_snippet_to_file(
+                file_name, method_source_code, parsed_doc_comment
+            )
+        else:
+            parsed_doc_comment = utils.extract_comments_from_markdown_code_block(
+                programming_language.value, doc_comment_result
+            )
+            utils.write_only_comments_to_file(
+                file_name, method_source_code, parsed_doc_comment
+            )
+
+        spinner.stop()
+
+        print(f"✅ Doc comment for {method_name} generated.")
+    
+    print(f"📊 Total Input Tokens: {total_original_tokens}")
+    print(f"🚀 Total Generated Tokens: {total_generated_tokens}")
