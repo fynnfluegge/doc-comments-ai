@@ -57,7 +57,7 @@ class LLM:
             "Add a detailed doc comment to the following {language} method:\n{code}\n"
             "The doc comment should describe what the method does. "
             "{inline_comments} "
-            "Return the method implementaion with the doc comment as a markdown code block. "
+            "Return the method implementaion with the doc comment as a single markdown code block. "
             "Don't include any explanations {haskell_missing_signature}in your response."
         )
         self.prompt = PromptTemplate(
