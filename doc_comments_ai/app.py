@@ -58,6 +58,11 @@ def run():
         default="http://localhost:11434",
         help="Ollama base url",
     )
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        help="Maximum number of tokens to generate. Defaults depend on the model",
+    )
 
     if sys.argv.__len__() < 2:
         sys.exit("Please provide a file")
@@ -74,17 +79,17 @@ def run():
 
     if args.azure_deployment:
         utils.is_azure_openai_environment_available()
-        llm_wrapper = llm.LLM(azure_deployment=args.azure_deployment)
+        llm_wrapper = llm.LLM(azure_deployment=args.azure_deployment, max_tokens=args.max_tokens)
     elif args.gpt4:
         utils.is_openai_api_key_available()
-        llm_wrapper = llm.LLM(model=GptModel.GPT_4)
+        llm_wrapper = llm.LLM(model=GptModel.GPT_4, max_tokens=args.max_tokens)
     elif args.gpt3_5_16k:
         utils.is_openai_api_key_available()
-        llm_wrapper = llm.LLM(model=GptModel.GPT_35_16K)
+        llm_wrapper = llm.LLM(model=GptModel.GPT_35_16K, max_tokens=args.max_tokens)
     elif args.ollama_model:
-        llm_wrapper = llm.LLM(ollama=(args.ollama_base_url, args.ollama_model))
+        llm_wrapper = llm.LLM(ollama=(args.ollama_base_url, args.ollama_model), max_tokens=args.max_tokens)
     else:
-        llm_wrapper = llm.LLM(local_model=args.local_model)
+        llm_wrapper = llm.LLM(local_model=args.local_model, max_tokens=args.max_tokens)
 
     generated_doc_comments = {}
 
@@ -102,13 +107,13 @@ def run():
 
         for node in treesitterNodes:
             method_name = utils.get_bold_text(node.name)
-
+            
             if node.doc_comment:
                 print(
                     f"⚠️  Method {method_name} already has a doc comment. Skipping..."
                 )
                 continue
-
+            
             if args.guided:
                 print(f"Generate doc for {utils.get_bold_text(method_name)}? (y/n)")
                 if not input().lower() == "y":

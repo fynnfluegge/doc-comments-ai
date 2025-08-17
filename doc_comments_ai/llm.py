@@ -18,40 +18,64 @@ class GptModel(Enum):
     GPT_4 = "gpt-4"
 
 
-class LLM:
+class LLM: 
     def __init__(
         self,
         model: GptModel = GptModel.GPT_35,
         local_model: "str | None" = None,
         azure_deployment: "str | None" = None,
         ollama: "tuple[str,str] | None" = None,
+        max_tokens: int | None = None,
     ):
-        max_tokens = 2048 if model == GptModel.GPT_35 else 4096
+
+        model_ctx_map = {
+            GptModel.GPT_35: 4096,
+            GptModel.GPT_35_16K: 16384,
+            GptModel.GPT_4: 8192,
+        } 
+
+        n_ctx = model_ctx_map.get(model, 8192)
+        default_max_tokens = 2048 if model == GptModel.GPT_35 else 8192
+
+        if max_tokens is None:
+            max_tokens = default_max_tokens
+
+        if max_tokens > n_ctx:
+            print(
+                f"⚠️ Warning: max_tokens={max_tokens} is larger than allowed n_ctx={n_ctx}. "
+                f"Using n_ctx instead."
+            )
+            max_tokens = n_ctx
+
+        self.max_tokens = max_tokens
+        self.n_ctx = n_ctx
+
         if local_model is not None:
             self.install_llama_cpp()
-
             self.llm = LlamaCpp(
                 model_path=local_model,
                 temperature=0.8,
-                max_tokens=max_tokens,
+                max_tokens=self.max_tokens,
                 verbose=False,
+                n_ctx=self.n_ctx,
             )
         elif azure_deployment is not None:
             self.llm = ChatLiteLLM(
                 temperature=0.8,
-                max_tokens=max_tokens,
+                max_tokens=self.max_tokens,
                 model=f"azure/{azure_deployment}",
+                n_ctx=self.n_ctx,
             )
         elif ollama is not None:
             self.llm = Ollama(
                 base_url=ollama[0],
                 model=ollama[1],
                 temperature=0.8,
-                num_ctx=max_tokens,
+                num_ctx=self.max_tokens,  # Ollama nutzt num_ctx
             )
         else:
             self.llm = ChatLiteLLM(
-                temperature=0.8, max_tokens=max_tokens, model=model.value
+                temperature=0.8, max_tokens=self.max_tokens, model=model.value
             )
         self.template = (
             "Add a detailed doc comment to the following {language} method:\n{code}\n"
